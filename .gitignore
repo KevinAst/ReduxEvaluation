@@ -1,0 +1,18 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+node_modules
+npm-debug.log*
+build-lib
+
+# emacs backup files
+*~
+
+# for now do NOT publish my distribution
+dist
