@@ -29,14 +29,14 @@ The app has been implemented in two different ways (found in different
 branches of this project).  This allows you to directly compare the
 two different implementations.  The branches are:
 
- - [**PlainReact**](./PlainReact): The original React app without
+ - **PlainReact**: The original React app without
    Redux.  The top-level [`<App>`](../PlainReact/src/comp/app.jsx)
    component maintains application state, and contains the function to
    alter this state.  React properties are trickled down from this
    `<App>` component throughout the entire containment tree.
 
- - [**ReduxReact**](./ReduxReact): A refactor of this same React app,
-   utilizing the Redux framework.
+ - **ReduxReact**: A refactor of this same React app, utilizing the
+   Redux framework.
 
 What follows are the details of this Redux refactor.
 
@@ -228,10 +228,6 @@ presentation component.  The example above was taken from the
 [ItemRow](../bd251a170c661f4d9ed4d081e867fbbfa49c3b7c/src/comp/item-row.jsx#L69)
 component (search for `"toggleItemDetailFn"`).
 
-???
-https://github.com/KevinAst/ReduxEvaluation/blob/bd251a170c661f4d9ed4d081e867fbbfa49c3b7c/src/comp/item-row.jsx#L69
-
-
 
 ## Simplified UI Components
 
@@ -314,10 +310,10 @@ logic residing at the top-level App component.  Our logic is much more
 consistent **following a well established repeating pattern**.
 
 The change in our top-level `<App>` component was **so dramatic** that it
-went from a class with 15 methods and over 300 lines (found
-[here](../PlainReact/src/comp/app.jsx)) to a React functional
+went from a class with 15 methods and over 300 lines **(found
+[here](../PlainReact/src/comp/app.jsx))** to a React functional
 component with an **extremely simple process** rendering 9 DOM lines
-(found [here](../ReduxReact/src/comp/app.jsx)).
+**(found [here](../ReduxReact/src/comp/app.jsx))**.
 
 The end result is our code is much easier to follow.  Property passing
 is minimized, and the "cause and effect" is localized to each component.
