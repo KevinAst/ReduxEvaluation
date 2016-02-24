@@ -29,13 +29,13 @@ The app has been implemented in two different ways (found in different
 branches of this project).  This allows you to directly compare the
 two different implementations.  The branches are:
 
- - [**PlainReact**](../PlainReact): The original React app without
+ - [**PlainReact**](./PlainReact): The original React app without
    Redux.  The top-level [`<App>`](../PlainReact/src/comp/app.jsx)
    component maintains application state, and contains the function to
    alter this state.  React properties are trickled down from this
    `<App>` component throughout the entire containment tree.
 
- - [**ReduxReact**](../ReduxReact): A refactor of this same React app,
+ - [**ReduxReact**](./ReduxReact): A refactor of this same React app,
    utilizing the Redux framework.
 
 What follows are the details of this Redux refactor.
@@ -175,8 +175,8 @@ src/
       ... snip snip
 ```
 
-Please note that the structural depth of our state (shown above) is
-implicitly defined through our reducers, and is is reflected by the
+**Please note** that the structural depth of our state (shown above) is
+**implicitly defined** through our reducers, and is is reflected by the
 javascript module names (below).
 
 
@@ -189,7 +189,7 @@ process, found in [src/browser.jsx](./src/browser.jsx)).
 This makes the app state available to any component that monitors the
 Redux store (via the Redux-Redux connect() function.  In our case we
 utilize a value added `wrapCompWithInjectedProps()` function found in
-[ReduxUtil](.src/util/redux-util.js).
+[ReduxUtil](src/util/redux-util.js).
 
 Under the covers, this bit of Redux magic is accomplished through the
 React Context feature.
@@ -202,7 +202,7 @@ actions that are interpreted by a graph of reducers (found in
 [src/state](src/state)).  This in conjunction with the Redux
 dispatcher, provides a complete solution for maintaining our state.
 
-[Action Creatores](./src/state/actionCreators.js) promote the public
+[Action Creators](./src/state/actionCreators.js) promote the public
 API to our state changing business logic.  You can think of them as
 event structures.  Each action will take a different set of
 parameters, specific to the action at hand.
@@ -225,8 +225,11 @@ import * as AC from 'src/state/actionCreators'
 Typically this is accomplished directly in our component wrapper,
 through an injected property that promotes a callback function to the
 presentation component.  The example above was taken from the
-[ItemRow](src/comp/item-row.jsx) component (search for
-`"toggleItemDetailFn"`).
+[ItemRow](../bd251a170c661f4d9ed4d081e867fbbfa49c3b7c/src/comp/item-row.jsx#L69)
+component (search for `"toggleItemDetailFn"`).
+
+???
+https://github.com/KevinAst/ReduxEvaluation/blob/bd251a170c661f4d9ed4d081e867fbbfa49c3b7c/src/comp/item-row.jsx#L69
 
 
 
@@ -282,7 +285,7 @@ Components can still require public properties passed to them from
 their parent component, but this is used for finer-grained control
 that is not based on state, and is somewhat rare.  Each component
 declares it's expected properties, through the standard `propTypes`
-React mechnism.  
+React mechanism.  
 
 > As an example [`<ItemRow>`](src/comp/item-row.jsx) has to be told what
 > item it is rendering (through the "item" property).  This can't be
@@ -310,10 +313,10 @@ Underlying this approach, you no longer have a mish mash of business
 logic residing at the top-level App component.  Our logic is much more
 consistent **following a well established repeating pattern**.
 
-The change in our top-level `<App>` component was so dramatic that it
+The change in our top-level `<App>` component was **so dramatic** that it
 went from a class with 15 methods and over 300 lines (found
 [here](../PlainReact/src/comp/app.jsx)) to a React functional
-component with an extremely simple process rendering 9 DOM lines
+component with an **extremely simple process** rendering 9 DOM lines
 (found [here](../ReduxReact/src/comp/app.jsx)).
 
 The end result is our code is much easier to follow.  Property passing
@@ -363,7 +366,7 @@ benefited from the Redux injection!
 
 The real development effort was setting up the
 [actions](./src/state/actionCreators.js) and [reducers](./src/state).
-Once you get accustomed to it, it is pretty straight forward (**and
+Once you get accustomed to it, it is very straight forward (**and
 testable**).  
 
 Once your actions and reducers are in place, invoking the business
