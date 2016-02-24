@@ -1,20 +1,23 @@
 'use strict';
 
-import { expect, React, ReactDOM, TestUtils } from '../../util/karma-setup';
+import { expect, React, ReactDOM, TestUtils }  from '../../util/karma-setup';
+import App              from '../app';
+import { formatMoney }  from 'accounting';
+import { appState }     from '../../state/appState' // our app-wide reducer
+import { Provider }     from 'react-redux'
+import { createStore }  from 'redux'
+import * as AC          from '../../state/actionCreators'
+const DATA = require('../../../public/fake-api.json'); // same fixture data browser sync is serving
 
-import App from '../app'; // KJB: component under test
-const DATA = require('../../../public/fake-api.json'); // KJB: same fixture data browser sync is serving
-
-import { formatMoney } from 'accounting';
 
 describe('cart', function () {
   let renderedComp;
   let domNode;
   beforeEach(function () {
-    renderedComp = TestUtils.renderIntoDocument(
-      <App items={DATA.items} />
-    );
-    domNode = ReactDOM.findDOMNode(renderedComp);
+    const store = createStore(appState);
+    store.dispatch(AC.catalogItemsDefined(DATA.items));
+    renderedComp = TestUtils.renderIntoDocument(<Provider store={store}><App/></Provider>);
+    domNode      = ReactDOM.findDOMNode(renderedComp);
   });
 
   describe('clicked on Cart link from catalog', function () {

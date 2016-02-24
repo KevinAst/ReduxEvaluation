@@ -1,20 +1,23 @@
 'use strict';
 
 import { expect, React, ReactDOM, TestUtils } from '../../util/karma-setup';
+import App              from '../app';
+import { formatMoney }  from 'accounting';
+import { unitPrice }    from '../../util/money';
+import { appState }     from '../../state/appState'
+import { Provider }     from 'react-redux'
+import { createStore }  from 'redux'
+import * as AC          from '../../state/actionCreators'
 const { renderIntoDocument, Simulate } = TestUtils;
-import App from '../app';
-import { formatMoney } from 'accounting';
-import { unitPrice } from '../../util/money';
-
 const DATA = require('../../../public/fake-api.json');
 
 describe('receipt', function () {
   let renderedComp;
   let domNode;
   beforeEach(function () {
-    renderedComp = renderIntoDocument(
-      <App items={DATA.items} />
-    );
+    const store = createStore(appState);
+    store.dispatch(AC.catalogItemsDefined(DATA.items));
+    renderedComp = TestUtils.renderIntoDocument(<Provider store={store}><App/></Provider>);
     domNode = ReactDOM.findDOMNode(renderedComp);
   });
 

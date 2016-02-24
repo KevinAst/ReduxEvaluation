@@ -1,18 +1,30 @@
 'use strict';
 
 import React           from 'react';
+import ReduxUtil       from '../util/redux-util'
+import { PropTypes }   from 'react'
 import { formatMoney } from 'accounting';
 import ItemDetails     from './item-details';
+import * as AC         from '../state/actionCreators'
 
-function ItemRow({item, itemExpanded, buyClickedFn, clickFn, children }) {
+
+// ***
+// *** ItemRow component
+// ***
+
+// our internal ItemRow$ class (wrapped with ItemRow below)
+const ItemRow$ = ({item, allowDetails, allowBuy, expandedItemId, toggleItemDetailFn, buyItemFn, children}) => {
 
   const genDetails = () => {
-    if (item === itemExpanded )
+    if (!allowDetails)
+      return null; // no-op if details are NOT allowed
+
+    if (item.id === expandedItemId)
       return <span>
                <button>
                  Collapse Details
                </button>
-               <ItemDetails item={itemExpanded}/>
+               <ItemDetails item={item}/>
              </span>;
     else
       return <span>
@@ -23,7 +35,7 @@ function ItemRow({item, itemExpanded, buyClickedFn, clickFn, children }) {
   };
 
   return (
-    <li data-id={item.id} onClick={clickFn}>
+    <li data-id={item.id} onClick={toggleItemDetailFn}>
       <img src={item.img} className="product"/>
       <div className="summary">
         <div className="name">
@@ -31,13 +43,41 @@ function ItemRow({item, itemExpanded, buyClickedFn, clickFn, children }) {
         </div>
         <div className="pricing">
           <span   className="price">{ formatMoney(item.price) }</span>
-          { buyClickedFn && <button className="buy" onClick={(e) => {e.stopPropagation(); buyClickedFn();}}>Buy</button> }
+          { allowBuy && <button className="buy" onClick={(e) => {e.stopPropagation(); buyItemFn();}}>Buy</button> }
         </div>
-        {clickFn && genDetails()}
+        {genDetails()}
       </div>
       {children && <div className="extra">{children}</div>}
     </li>
   );
+}
+
+
+//***
+//*** wrap our internal ItemRow$ class with a public ItemRow class
+//*** that injects properties (both data and behavior) from our state.
+//***
+
+const ItemRow = ReduxUtil.wrapCompWithInjectedProps(ItemRow$, {
+                  mapStateToProps: (appState, ownProps) => {
+                    return {
+                      expandedItemId: appState.catalog.expandedItemId,
+                    }
+                  },
+                  mapDispatchToProps: (dispatch, ownProps) => {
+                    return {
+                      toggleItemDetailFn: (e) => { if (ownProps.allowDetails) dispatch(AC.toggleItemDetail(ownProps.item)) },
+                      buyItemFn:          (e) => { if (ownProps.allowBuy)     dispatch(AC.buyItem(ownProps.item)) },
+                    }
+                  }
+                });
+
+// define expected props
+ItemRow.propTypes = {
+  item:         PropTypes.object.isRequired,
+  allowDetails: PropTypes.bool,
+  allowBuy:     PropTypes.bool,
+  children:     PropTypes.node,
 }
 
 export default ItemRow;

@@ -29,8 +29,10 @@ import crc from 'crc';
  *   allProminentMsgs(): String[]
  * 
  * The validationState is a hash containing an aggregation of all our
- * validation results, which is suitable to determine if React needs to
- * re-generate.
+ * validation results, which is suitable to determine if React needs
+ * to re-generate.  As an alternative, if a reactComp is supplied
+ * (in constructor), then AlmondJoi can coordinate React re-renders
+ * automatically.
  * 
  * The isValid() is a convenience method to determine if any validation
  * errors exist.
@@ -131,7 +133,7 @@ import crc from 'crc';
  */
 class AlmondJoi {
 
-  constructor(mySchema) {
+  constructor(mySchema, reactComp) { // [reacComp] - optional React Component (when supplied can coordinate re-rendering)
 
     if (!mySchema) {
       throw new Error("ERROR: AlmondJoi() mySchema parameter is required");
@@ -159,8 +161,10 @@ class AlmondJoi {
 
     }
 
-    // retain internal compiled joiSchema
-    this.joiSchema = Joi.object().keys(joiSchemaObj);
+    // retain various items in self
+    this._joiSchema       = Joi.object().keys(joiSchemaObj); // our internal compiled joiSchema
+    this._validationState = null;       // our current validation state (suitable to determine if React needs to re-generate)
+    this._reactComp       = reactComp;  // the optional React Component (when supplied can coordinate re-rendering)
 
     // initialize remaining state
     _firstFieldInError.set(this, null);
@@ -205,12 +209,15 @@ class AlmondJoi {
 
 
   // perform validation on supplied fields { field1: value1, field2: value2, ... }
-  // ... return validationState - a hash containing an aggregation of all our validation results
-  //                              suitable to determine if React needs to re-generate
+  // RETURN: validationState - a hash containing an aggregation of all our validation results
+  //                           suitable to determine if React needs to re-generate
+  //         NOTE: As an alternative, if a reactComp is supplied (in constructor), 
+  //               then AlmondJoi can coordinate React re-renders automatically, and
+  //               you do not have to interpret validationState.
   validate(fields) {
     
     const joiResult = Joi.validate(fields, 
-                                    this.joiSchema,
+                                    this._joiSchema,
                                     { // TODO: provide AlmondJoi client hooks to change these options
                                       abortEarly: false, // give us all the errors at once (both for all fields and multiple errors per field)
                                     });
@@ -238,12 +245,22 @@ class AlmondJoi {
         }
       }
     }
+    validationState = validationState.toString(16);
     _firstFieldInError.set(this, firstFieldInError);
     _allProminentMsgs.set(this, allProminentMsgs);
 
+    // as a convenience, optionally coordinate React re-renders
+    if (this._reactComp &&                         // ... if our optional React Component has been supplied,
+      validationState !== this._validationState) { //     and our validaion has changed,
+      this._reactComp.forceUpdate();               // ask React to force an update (to visualize the errors)
+    }
+
+    // retain our current validation state
+    this._validationState = validationState;
+
     // that's all folks :-)
-    // console.log("validationState: " + validationState.toString(16));
-    return validationState.toString(16);
+    // console.log("validationState: " + validationState);
+    return validationState
   }
 
   // return indicator as to ALL fields are valid [or NOT being validated] (true) or invalid (false)
