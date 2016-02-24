@@ -331,8 +331,8 @@ If you doubt me, I would challenge you to simply look at the
 before/after ??old/new-LINK src (from the two branches of this
 exercise).
 
-- for starters, look at the bootstrap process ... [browser.jsx](blob/master/src/browser.jsx)
-  ([before](blob/PlainReact/src/browser.jsx)/[after](blob/ReduxReact/src/browser.jsx))
+- for starters, look at the bootstrap process ... [browser.jsx](../master/src/browser.jsx)
+  ([before](../PlainReact/src/browser.jsx)/[after](../ReduxReact/src/browser.jsx))
 
-- then look at the top-level [app.jsx](blob/master/src/comp/app.jsx) source 
-  ([before](blob/PlainReact/src/comp/app.jsx)/[after](blob/ReduxReact/src/comp/app.jsx))
+- then look at the top-level [app.jsx](../master/src/comp/app.jsx) source 
+  ([before](../PlainReact/src/comp/app.jsx)/[after](../ReduxReact/src/comp/app.jsx))
