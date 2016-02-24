@@ -1,0 +1,224 @@
+// KJB: FontAwesome
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
+
+// KJB: React Select
+@import (inline) "../node_modules/react-select/dist/react-select.css";
+
+// Constants
+@mainFontSize: 24px;
+@extraSmallFontSize: 14px;
+
+
+.inputError { /* apply a red border to invalid fields */
+  border: 3px solid #f00;
+}
+
+body {
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: @mainFontSize;
+  background-color: beige;
+  margin: 40px;
+}
+
+a {
+  text-decoration: none;
+  padding: 0 2px;
+}
+a:hover { background-color: lightblue; }
+
+input {
+  border: 2px inset;
+  border-radius:4px;
+}
+
+.devHelp {
+  color: grey;
+  font-size: @extraSmallFontSize;
+}
+
+button {
+  color: white;
+  background: linear-gradient(to bottom, #37adb0, #329ca0);
+  border-radius: 6px;
+}
+
+
+.catalog, .cart, .receipt {
+  li {
+    list-style-type: none;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    .summary {
+      align-self: stretch;
+      margin-left: 10px;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      .buy { display: block; }
+      .name { font-size: @mainFontSize; }
+      .pricing {
+        font-size: @extraSmallFontSize;
+        display: flex;
+        .buy { margin-left: 5px; }
+      }
+      .desc { font-size: @extraSmallFontSize; }
+    }
+    img.product { width: 160px; }
+  }
+}
+
+.details {
+  font-size: @extraSmallFontSize;
+  .text-label { font-weight: 700; }
+  button.buy { margin-left: 5px; }
+}
+
+
+.cart, .receipt {
+  .summary { flex: 3 1 200px; margin-right:10px; }
+  .extra { flex: 0 1 350px; display: flex; }
+  input[name="qty"] { width: 20px; margin-right: 5px; background-color: #eeeeee; }
+  button { margin-right: 5px; }
+  button.remove { margin-left: 5px; margin-right: 5px; }
+}
+
+.receipt .lineTotal { margin-left: 20px; }
+
+.cartButton { float: right; }
+
+.modal {
+  z-index: 5;
+  position: fixed;
+  overflow: auto;
+  left: 20px;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid grey;
+  padding: 10px;
+}
+
+.details {
+  div { margin-top: 10px; }
+  .itemImg { float: right; margin: 10px; }
+}
+
+.checkoutModal {
+  z-index: 10;
+  position: fixed;
+  overflow: auto;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.checkoutContainer {
+  font-size: @extraSmallFontSize;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  * { border-radius: 5px; }
+
+  .errors {
+    background-color: #cccccc;
+    margin: 10px 35px 10px 35px;
+    padding: 4px;
+  }
+  .error { color: red };
+
+  .checkout {
+    width: 500px;
+    // height: 400px;
+    padding-bottom: 20px;
+    background-color: grey;
+    .closeCheckout { margin: 5px; }
+    .total { float: right; background-color: beige; margin: 5px; padding: 2px; }
+    .formWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // width: 100%;
+      // height: 100%;
+    }
+    form {
+      background-color: lightgrey;
+      width: 400px;
+      padding: 15px;
+      display: flex;
+      flex-flow: column;
+
+      fieldset {
+        margin: 10px 0 10px 0;
+      }
+
+      .userInfo {
+        input[name="email"] {
+          width: 340px;
+        }
+        input[name="addr1"], input[name="addr2"] {
+          width: 340px;
+        }
+        input[name="city"] {
+          width: 15ch;
+          margin-right: 10px;          
+        }
+
+        .Select {
+          display: inline-block; /* display in-line rather than on next line */
+        }
+        .Select-control { /* state selector */
+          width:  15ch;
+          height: 22px;
+        }
+        .Select-placeholder {
+          line-height: 20px;
+        }
+        .Select-input {
+          height: 20px;
+        }
+        .Select-input > input {
+          height: 20px;
+        }
+        .Select-option {
+          padding: 1px 2px;
+        }
+        .Select-searching {
+          padding: 1px 2px;
+        }
+
+        input[name="zip"] {
+          width: 10ch;
+        }
+      }
+      .ccLabel {
+        margin: 10px;
+        display: flex;
+        flex-flow: column;
+        input[name="creditCard"] {
+          width: 340px;
+        }
+      }
+      .meta {
+        margin: 10px;
+        display: flex;
+        input[name="expiry"] {
+          width: 80px;
+        }
+        input[name="cvcode"] {
+          width: 60px;
+        }
+      }
+      button.pay {
+        height: 40px;
+        color: white;
+        background: linear-gradient(to bottom, #37adb0, #329ca0);
+      }
+    }
+  }
+}
