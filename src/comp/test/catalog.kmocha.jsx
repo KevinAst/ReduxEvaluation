@@ -1,11 +1,14 @@
 'use strict';
 
 import { expect, React, ReactDOM, TestUtils } from '../../util/karma-setup';
-
-import App from '../app';                         // KJB: component under test
-const DATA = require('../../../public/fake-api.json'); // KJB: same fixture data browser sync is serving
-
+import App             from '../app';
 import { formatMoney } from 'accounting';
+import { appState }    from '../../state/appState'
+import { Provider }    from 'react-redux'
+import { createStore } from 'redux'
+import * as AC         from '../../state/actionCreators'
+import Catalog         from '../catalog';
+const DATA = require('../../../public/fake-api.json'); // same fixture data browser sync is serving
 
 describe('Catalog Tests', function () {
 
@@ -13,7 +16,9 @@ describe('Catalog Tests', function () {
   //      ... because I am generating dynamic tests [i.e. it()] that use this data,
   //      ... which drive the it() characteristics
   //      ... this is possible because our tests do NOT modify the fixture (i.e. it is read-only)
-  let renderedComp    = TestUtils.renderIntoDocument(<App items={DATA.items}/>);
+  const store = createStore(appState);
+  store.dispatch(AC.catalogItemsDefined(DATA.items));
+  let renderedComp    = TestUtils.renderIntoDocument(<Provider store={store}><App/></Provider>);
   let renderedDomNode = ReactDOM.findDOMNode(renderedComp);
   let renderedLiNodes = renderedDomNode.querySelectorAll('.catalog li');
 
@@ -28,14 +33,14 @@ describe('Catalog Tests', function () {
     it('Insure we render ALL items', function () {
       expect(renderedLiNodes.length).toBe(DATA.items.length);
     });
-
+    
     // dynamically generate a series of tests for each item
     for (let i=0; i<renderedLiNodes.length; i++) {
       const li   = renderedLiNodes[i];
       const item = DATA.items[i];
-
+    
       describe(`Verify Item[${i}]`, function() {
-
+    
         // Verify Names
         const expectedName = item.name;
         it(`name[${i}]: ${expectedName}`, function() {
@@ -43,7 +48,7 @@ describe('Catalog Tests', function () {
           expect(nameElm).toExist();
           expect(nameElm.textContent).toEqual(expectedName);
         });
-
+    
         // Verify Prices
         const expectedPrice = formatMoney(item.price);
         it(`price[${i}]: ${expectedPrice}`, function() {
@@ -51,7 +56,7 @@ describe('Catalog Tests', function () {
           expect(priceElm).toExist();
           expect(priceElm.textContent).toEqual(expectedPrice);
         });
-
+    
         // NO LONGER DISPLAYED (in our in-line version)
         // // Verify Descriptions
         // const expectedDesc = item.desc;
@@ -60,7 +65,7 @@ describe('Catalog Tests', function () {
         //   expect(descElm).toExist();
         //   expect(descElm.textContent).toEqual(expectedDesc);
         // });
-
+    
       });
     }
 
@@ -91,38 +96,38 @@ describe('Catalog Tests', function () {
 
 
   describe('checking filtered items display', function() {
-
+  
     // dynamically generate a series of tests for each category
-    for (const testCategory of [...App.CATEGORIES, ""]) {
-
+    for (const testCategory of [...Catalog.CATEGORIES, ""]) {
+  
       describe(`select category '${testCategory}'`, function () {
-
+  
         let expectedFilteredItems = null;
-
+  
         beforeEach(function () {
           // apply the desired filter to produce our expected items
           expectedFilteredItems = testCategory ?
                                     DATA.items.filter(x => x.category === testCategory) :
                                     DATA.items;
-
+  
           // select the desired filter within our GUI
           const selectDom = renderedDomNode.querySelector('select.category');
           // ... initially select anything (just for fun)
-          TestUtils.Simulate.change(selectDom, { target: { value: App.CATEGORIES[0] }});
+          TestUtils.Simulate.change(selectDom, { target: { value: Catalog.CATEGORIES[0] }});
           // ... now select the desired item
           TestUtils.Simulate.change(selectDom, { target: { value: testCategory }});
         });
-
+  
         // apply our test
         it(`should display '${testCategory}' items`, function () {
           const actualFilteredItems = renderedDomNode.querySelectorAll('.catalog li');
           expect(actualFilteredItems.length).toBe(expectedFilteredItems.length);
         });
-
+  
       });
-
+  
     }
-
+  
   });
 
 

@@ -1,33 +1,41 @@
 'use strict';
 
-import React from 'react';
-import MyReactComponent from '../util/my-react-component';
-import ItemRow from './item-row'; // KJB: hmmmm we re-use our ItemRow component
-import { formatMoney } from 'accounting';
-import { totalItems, unitPrice } from '../util/money';
-import Esc from '../util/esc';
+import React                     from 'react'
+import ReduxUtil                 from '../util/redux-util'
+import MyReactComponent          from '../util/my-react-component'
+import ItemRow                   from './item-row' // NOTE: we re-use our ItemRow component
+import { formatMoney }           from 'accounting'
+import { totalItems, unitPrice } from '../util/money'
+import Esc                       from '../util/esc'
+import * as AC                   from '../state/actionCreators'
 
-class Cart extends MyReactComponent {
+
+// ***
+// *** Cart component (a Shopping Cart)
+// ***
+
+// our internal Cart$ class (wrapped with Cart below)
+class Cart$ extends MyReactComponent {
 
   componentDidMount() {
-    Esc.regEscHandler(this.props.closeFn);
+    Esc.regEscHandler(this.props.closeCartFn);
   }
 
   componentWillUnmount() {
-    Esc.unregEscHandler(this.props.closeFn);
+    Esc.unregEscHandler(this.props.closeCartFn);
   }
 
   render() {
-    const { cartItems, closeFn, checkoutFn, removeItemFn, changeQtyFn } = this.props;
+    const { cartItems, closeCartFn, changeQtyFn, removeItemFn, checkoutFn } = this.props;
 
     return (
       <div className="modal cart">
     
         <button className="continue"
-                onClick={closeFn}>Continue shopping</button>
+                onClick={closeCartFn}>Continue shopping</button>
     
         <button className="checkout"
-                onClick={e => checkoutFn(totalItems(cartItems), e)}
+                onClick={e => checkoutFn(totalItems(cartItems))}
                 disabled={totalItems(cartItems) <= 0}>Checkout</button>
     
         <h1>Cart</h1>
@@ -52,10 +60,10 @@ class Cart extends MyReactComponent {
                    onClick={e => changeQtyFn(cartItem, cartItem.qty+1)}></i>
                 <i className="fa fa-angle-double-down"
                    title="decrease quantity"
-                   onClick={e => {if (cartItem.qty>0) changeQtyFn(cartItem, cartItem.qty-1)}}></i>
+                   onClick={e => changeQtyFn(cartItem, cartItem.qty-1)}></i>
               </span>
     
-              <button className="remove" onClick={e => removeItemFn(cartItem, e)} >Remove</button>
+              <button className="remove" onClick={e => removeItemFn(cartItem)} >Remove</button>
     
               <span className="lineTotal">
                 { formatMoney(unitPrice(cartItem.price, cartItem.qty)) }
@@ -68,6 +76,32 @@ class Cart extends MyReactComponent {
       </div>
     );
   }
+}
+
+
+//***
+//*** wrap our internal Cart$ class with a public Cart class
+//*** that injects properties (both data and behavior) from our state.
+//***
+
+const Cart = ReduxUtil.wrapCompWithInjectedProps(Cart$, {
+               mapStateToProps: (appState, ownProps) => {
+                 return {
+                   cartItems: appState.cart.cartItems,
+                 }
+               },
+               mapDispatchToProps: (dispatch, ownProps) => {
+                 return {
+                   closeCartFn:  ()              =>  { dispatch( AC.closeCart() ) },
+                   changeQtyFn:  (cartItem, qty) =>  { if (qty>=0) dispatch( AC.setCartItemQty(cartItem, qty) ) },
+                   removeItemFn: (cartItem)      =>  { dispatch( AC.removeCartItem(cartItem) ) },
+                   checkoutFn:   (total)         =>  { dispatch( AC.checkout(total) ) },
+                 }
+               }
+             });
+
+// define expected props
+Cart.propTypes = {
 }
 
 export default Cart;

@@ -1,11 +1,14 @@
 'use strict';
 
 import { expect, React, ReactDOM, TestUtils } from '../../util/karma-setup';
+import App              from '../app';
+import { formatMoney }  from 'accounting';
+import { appState }     from '../../state/appState'
+import { Provider }     from 'react-redux'
+import { createStore }  from 'redux'
+import * as AC          from '../../state/actionCreators'
+const DATA = require('../../../public/fake-api.json'); // same fixture data browser sync is serving
 
-import App from '../app';                         // KJB: component under test
-const DATA = require('../../../public/fake-api.json'); // KJB: same fixture data browser sync is serving
-
-import { formatMoney } from 'accounting';
 
 describe('Checkout Tests', function () {
 
@@ -14,9 +17,10 @@ describe('Checkout Tests', function () {
   //      ... which drive the it() characteristics
   //      ... this is possible because our tests do NOT modify the fixture (i.e. it is read-only)
   //      TODO: this has started to be a bit dicy with the advent of entering data (must fill in fields in the right order)
-  let renderedComp    = TestUtils.renderIntoDocument(<App items={DATA.items}/>);
+  const store = createStore(appState);
+  store.dispatch(AC.catalogItemsDefined(DATA.items));
+  let renderedComp    = TestUtils.renderIntoDocument(<Provider store={store}><App/></Provider>);
   let renderedDomNode = ReactDOM.findDOMNode(renderedComp);
-
   
   // KJB: utility driving GUI data entry for validation tests
   function enterData(data) { // data is simple object with field/value pairs ... ex: { email: 'a@b.com', expiry: '12/20' }
