@@ -7,7 +7,7 @@ import ItemRow                   from './item-row';
 import { totalItems, unitPrice } from '../util/money';
 import { formatMoney }           from 'accounting';
 import Esc                       from '../util/esc';
-import * as AC                   from '../state/actionCreators'
+import {AC}                      from '../state/actions'
 
 
 // ***

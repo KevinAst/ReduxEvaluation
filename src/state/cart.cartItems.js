@@ -1,6 +1,6 @@
 'use strict'
 
-import * as AT from './actionTypes'
+import {AT} from './actions'
 
 
 // ***
@@ -10,7 +10,7 @@ import * as AT from './actionTypes'
 export const cartItems = (cartItems=[], action) => {
   switch (action.type) {
 
-    case AT.BUY_ITEM:
+    case AT.buyItem:
         
       // clone cartItems array, processing entry when it previously existed
       let itemExistsInCart = false
@@ -31,7 +31,7 @@ export const cartItems = (cartItems=[], action) => {
 
 
 
-    case AT.SET_CART_ITEM_QTY:
+    case AT.setCartItemQty:
 
       return cartItems.map( (cartItem) => {
         if (action.cartItem.id === cartItem.id) {
@@ -42,13 +42,13 @@ export const cartItems = (cartItems=[], action) => {
 
 
 
-    case AT.REMOVE_CART_ITEM:
+    case AT.removeCartItem:
 
       return cartItems.filter( (cartItem) => action.cartItem.id !== cartItem.id )
 
 
 
-    case AT.SALE_COMPLETE:
+    case AT.saleComplete:
 
       return []
 

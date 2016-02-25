@@ -7,7 +7,7 @@ import ItemRow                   from './item-row' // NOTE: we re-use our ItemRo
 import { formatMoney }           from 'accounting'
 import { totalItems, unitPrice } from '../util/money'
 import Esc                       from '../util/esc'
-import * as AC                   from '../state/actionCreators'
+import {AC}                      from '../state/actions'
 
 
 // ***

@@ -1,6 +1,5 @@
 'use strict';
 
-import * as AT             from './actionTypes'
 import { combineReducers } from 'redux'
 import { visible }         from './cart.visible'
 import { cartItems }       from './cart.cartItems'

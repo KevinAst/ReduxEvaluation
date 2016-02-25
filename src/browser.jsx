@@ -7,7 +7,7 @@ import ReactDOM        from 'react-dom';
 import { Provider }    from 'react-redux'
 import { createStore } from 'redux'
 import { appState }    from './state/appState' // our app-wide reducer
-import * as AC         from './state/actionCreators'
+import { AC }          from './state/actions'
 import App             from './comp/app';
 
 

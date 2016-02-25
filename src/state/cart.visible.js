@@ -1,7 +1,6 @@
 'use strict';
 
-import * as AT from './actionTypes'
-
+import {AT} from './actions'
 
 // ***
 // *** appState.cart.visible reducer
@@ -10,16 +9,16 @@ import * as AT from './actionTypes'
 export const visible = (visible=false, action) => {
   switch (action.type) {
 
-    case AT.OPEN_CART:
+    case AT.openCart:
       return true
 
-    case AT.CLOSE_CART:
+    case AT.closeCart:
       return false
 
-    case AT.BUY_ITEM:
+    case AT.buyItem:
       return true     // implicitly show cart when we buy the item
 
-    case AT.SALE_COMPLETE:
+    case AT.saleComplete:
       return false
 
     default:

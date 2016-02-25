@@ -148,8 +148,7 @@ be found in [src/state/](./src/state/).
 ```
 src/
   state/
-    actionTypes.js .............. all action types (defined constants)
-    actionCreators.js ........... all action creators
+    actions.js .................. all Action Creators (AC) and Action Types (AT)
 
     appState.js ................. appState top-level reducer (a Redux combineReducer)
 
@@ -202,7 +201,7 @@ actions that are interpreted by a graph of reducers (found in
 [src/state](src/state)).  This in conjunction with the Redux
 dispatcher, provides a complete solution for maintaining our state.
 
-[Action Creators](./src/state/actionCreators.js) promote the public
+[Action Creators](./src/state/actions.js) promote the public
 API to our state changing business logic.  You can think of them as
 event structures.  Each action will take a different set of
 parameters, specific to the action at hand.
@@ -212,12 +211,12 @@ Actions are processed by simply dispatching them through the Redux
 
 As an example, let's say you have an item who's detail should be
 expanded in our GUI.  You simply locate the desired action
-in [src/state/actionCreators.js](src/state/actionCreators.js),
+in [src/state/actions.js](src/state/actions.js),
 and publish it with the Redux dispatch mechanism.  This task is
 accomplished in one simple line of code:
 
 ```javascript
-import * as AC from 'src/state/actionCreators'
+import {AC} from 'src/state/actions'
 ...
   dispatch(AC.toggleItemDetail(item))
 ```
@@ -361,7 +360,7 @@ simple apps can benefit.  The shopping cart app is "pretty simple"
 benefited from the Redux injection!
 
 The real development effort was setting up the
-[actions](./src/state/actionCreators.js) and [reducers](./src/state).
+[actions](./src/state/actions.js) and [reducers](./src/state).
 Once you get accustomed to it, it is very straight forward (**and
 testable**).  
 

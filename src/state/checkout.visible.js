@@ -1,6 +1,6 @@
 'use strict';
 
-import * as AT from './actionTypes'
+import {AT} from './actions'
 
 
 // ***
@@ -10,13 +10,13 @@ import * as AT from './actionTypes'
 export const visible = (visible=false, action) => {
   switch (action.type) {
 
-    case AT.CHECKOUT:
+    case AT.checkout:
       return true
 
-    case AT.CLOSE_CHECKOUT:
+    case AT.closeCheckout:
       return false
 
-    case AT.SALE_COMPLETE:
+    case AT.saleComplete:
       return false
 
     default:

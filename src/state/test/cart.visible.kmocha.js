@@ -2,7 +2,7 @@
 
 import { expect }  from '../../util/karma-setup'
 import { visible } from '../cart.visible'
-import * as AC     from '../actionCreators'
+import { AC }      from '../actions'
 
 
 // ***

@@ -5,7 +5,7 @@ import ReduxUtil       from '../util/redux-util'
 import { PropTypes }   from 'react'
 import { formatMoney } from 'accounting';
 import ItemDetails     from './item-details';
-import * as AC         from '../state/actionCreators'
+import {AC}            from '../state/actions'
 
 
 // ***

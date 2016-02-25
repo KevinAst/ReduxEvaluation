@@ -9,7 +9,8 @@ import { formatMoney }   from 'accounting';
 import MyReactComponent  from '../util/my-react-component';
 import USStates          from '../util/USStates';
 import Esc               from '../util/esc';
-import * as AC           from '../state/actionCreators'
+import {AC}              from '../state/actions'
+import shortid           from 'shortid';
 
 
 // ***
@@ -350,7 +351,7 @@ const Checkout = ReduxUtil.wrapCompWithInjectedProps(Checkout$, {
                      return {
                        closeCheckoutFn: (e)         => { dispatch(AC.closeCheckout()) },
                        updateFieldFn:   (e)         => { dispatch(AC.setCheckoutField(e.target.name, e.target.value)) },
-                       saleCompletedFn: (cartItems) => { dispatch(AC.saleComplete(cartItems)) },
+                       saleCompletedFn: (cartItems) => { dispatch(AC.saleComplete(shortid.generate(), cartItems)) },
                      }
                    }
                  });

@@ -2,7 +2,7 @@
 
 import { expect }         from '../../util/karma-setup';
 import { filterCategory } from '../catalog.filterCategory'
-import * as AC            from '../actionCreators'
+import { AC }             from '../actions'
 
 
 // ***
