@@ -340,14 +340,14 @@ class Checkout$ extends MyReactComponent {
 //***
 
 const Checkout = ReduxUtil.wrapCompWithInjectedProps(Checkout$, {
-                   mapStateToProps: (appState, ownProps) => {
+                   mapStateToProps(appState, ownProps) {
                      return {
                        fields:    appState.checkout.fields,
                        total:     appState.checkout.total,
                        cartItems: appState.cart.cartItems,
                      }
                    },
-                   mapDispatchToProps: (dispatch, ownProps) => {
+                   mapDispatchToProps(dispatch, ownProps) {
                      return {
                        closeCheckoutFn: (e)         => { dispatch(AC.closeCheckout()) },
                        updateFieldFn:   (e)         => { dispatch(AC.setCheckoutField(e.target.name, e.target.value)) },

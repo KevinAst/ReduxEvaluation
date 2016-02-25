@@ -59,12 +59,12 @@ const ItemRow$ = ({item, allowDetails, allowBuy, expandedItemId, toggleItemDetai
 //***
 
 const ItemRow = ReduxUtil.wrapCompWithInjectedProps(ItemRow$, {
-                  mapStateToProps: (appState, ownProps) => {
+                  mapStateToProps(appState, ownProps) {
                     return {
                       expandedItemId: appState.catalog.expandedItemId,
                     }
                   },
-                  mapDispatchToProps: (dispatch, ownProps) => {
+                  mapDispatchToProps(dispatch, ownProps) {
                     return {
                       toggleItemDetailFn: (e) => { if (ownProps.allowDetails) dispatch(AC.toggleItemDetail(ownProps.item)) },
                       buyItemFn:          (e) => { if (ownProps.allowBuy)     dispatch(AC.buyItem(ownProps.item)) },

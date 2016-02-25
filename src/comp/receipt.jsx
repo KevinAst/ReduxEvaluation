@@ -62,13 +62,13 @@ class Receipt$ extends MyReactComponent {
 //***
 
 const Receipt = ReduxUtil.wrapCompWithInjectedProps(Receipt$, {
-                  mapStateToProps: (appState, ownProps) => {
+                  mapStateToProps(appState, ownProps) {
                     return {
                       receiptItems: appState.receipt.receiptItems,
                       receiptId:    appState.receipt.id,
                     }
                   },
-                  mapDispatchToProps: (dispatch, ownProps) => {
+                  mapDispatchToProps(dispatch, ownProps) {
                     return {
                       closeReceiptFn: (e) =>  { dispatch( AC.closeReceipt() ) },
                     }

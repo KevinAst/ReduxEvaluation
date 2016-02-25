@@ -34,14 +34,14 @@ const App$ = ({cartVisible, checkoutVisible, receiptId, openCartFn}) => {
 //***
 
 const App = ReduxUtil.wrapCompWithInjectedProps(App$, {
-              mapStateToProps: (appState, ownProps) => {
+              mapStateToProps(appState, ownProps) {
                 return {
                   cartVisible:     appState.cart.visible,
                   checkoutVisible: appState.checkout.visible,
                   receiptId:       appState.receipt.id,
                 }
               },
-              mapDispatchToProps: (dispatch, ownProps) => {
+              mapDispatchToProps(dispatch, ownProps) {
                 return {
                   openCartFn: () =>  { dispatch(AC.openCart()) },
                 }
