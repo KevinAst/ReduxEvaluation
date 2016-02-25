@@ -3,6 +3,7 @@
 **Table of Contents**
 
 - [Overview](#overview)
+- [Run Project](#run-project)
 - [App State](#app-state)
   - [State Specification](#state-specification)
   - [State Implementation](#state-implementation)
@@ -39,6 +40,27 @@ two different implementations.  The branches are:
    Redux framework.
 
 What follows are the details of this Redux refactor.
+
+
+## Run Project
+
+If you want to run this project on your local machine, simply clone
+the git repo (or zip it up), and follow these instructions.
+
+- Install Project Dependencies
+
+```
+$ cd {project-root}
+$ npm install
+```
+
+- For Development
+
+```
+$ cd {project-root}
+$ npm start
+> browse localhost:3005
+```
 
 
 ## App State
