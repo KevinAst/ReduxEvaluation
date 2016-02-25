@@ -20,7 +20,7 @@ describe('appState.receipt.id reducer tests', () => {
 
     const curState      = null
     const nextState     = id(curState, 
-                             AC.saleComplete([1,2,3]))
+                             AC.saleComplete("receiptId", [1,2,3]))
     const expectedState = "A-Generated-ID"
 
     expect(nextState)
