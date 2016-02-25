@@ -108,6 +108,15 @@ are utilized in the specified DOM hierarchy:
 </App>
 ```
 
+**Notice** that the `<ItemRow>` component is re-used in various
+contexts.  Keep in mind that only the high-level basics are shown
+here.  If you dig in the code you will find additional properties that
+control the characteristics of `<ItemRow>` in these varying contexts.
+
+In looking at this summary, it seems there may be a need for an
+`<Items>` component :-)
+
+
 
 ## App State
 
