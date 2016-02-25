@@ -4,7 +4,7 @@
 
 - [Overview](#overview)
 - [Run the Project](#run-the-project)
-- [Components Orientation](#components-orientation)
+- [Component Orientation](#component-orientation)
 - [App State](#app-state)
   - [State Specification](#state-specification)
   - [State Implementation](#state-implementation)
@@ -65,7 +65,7 @@ $ npm start
 
 
 
-## Components Orientation
+## Component Orientation
 
 As an orientation to the Shopping Cart App, the following components
 are utilized in the specified DOM hierarchy:
