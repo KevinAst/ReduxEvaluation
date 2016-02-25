@@ -3,7 +3,8 @@
 **Table of Contents**
 
 - [Overview](#overview)
-- [Run Project](#run-project)
+- [Run the Project](#run-the-project)
+- [Components Orientation](#components-orientation)
 - [App State](#app-state)
   - [State Specification](#state-specification)
   - [State Implementation](#state-implementation)
@@ -42,24 +43,69 @@ two different implementations.  The branches are:
 What follows are the details of this Redux refactor.
 
 
-## Run Project
+## Run the Project
 
 If you want to run this project on your local machine, simply clone
 the git repo (or zip it up), and follow these instructions.
 
-- Install Project Dependencies
+### Install Project Dependencies
 
 ```
 $ cd {project-root}
 $ npm install
 ```
 
-- For Development
+### For Development
 
 ```
 $ cd {project-root}
 $ npm start
 > browse localhost:3005
+```
+
+
+
+## Components Orientation
+
+As an orientation to the Shopping Cart App, the following components
+are utilized in the specified DOM hierarchy:
+
+```
+<App>
+
+  <Catalog>
+    <ul>
+      ... iterate over appState.catalog.items
+          <ItemRow item={item}>
+             <ItemDetails item={item}/>
+          </ItemRow>
+    </ul>
+  </Catalog>
+
+  <Cart> ... conditionally rendered based on appState.cart.visible
+    <ul>
+      ... iterate over appState.cart.cartItems
+          <ItemRow item={cartItem}>
+             <ItemDetails item={cartItem}/>
+          </ItemRow>
+    </ul>
+  </Cart>
+
+  <Checkout> ... conditionally rendered based on appState.checkout.visible
+    ... bunch of form elements
+  </Checkout>
+
+  <Receipt> ... conditionally rendered based on appState.receipt.id
+    <ul>
+      ... iterate over appState.receipt.receiptItems
+          <ItemRow item={receiptItem}>
+             <ItemDetails item={receiptItem}/>
+             ... more html DOM children here (receipt detail)
+          </ItemRow>
+    </ul>
+  </Receipt>
+
+</App>
 ```
 
 
