@@ -72,7 +72,7 @@ describe('appState.cart.cartItems reducer tests', () => {
   it('handle AC.saleComplete() Action', () => {
     const curState  = [4,5,6]
     const nextState = cartItems(curState, 
-                                AC.saleComplete([1,2,3]))
+                                AC.saleComplete("receiptId", [1,2,3]))
     const expectedState = []
 
     expect(nextState)

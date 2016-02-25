@@ -56,7 +56,7 @@ describe('appState.cart.visible reducer tests', () => {
 
     const curState      = true
     const nextState     = visible(curState, 
-                                  AC.saleComplete([1,2,3]))
+                                  AC.saleComplete("receiptId", [1,2,3]))
     const expectedState = false
 
     expect(nextState)

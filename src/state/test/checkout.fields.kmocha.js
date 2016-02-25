@@ -33,7 +33,7 @@ describe('appState.checkout.fields reducer tests', () => {
     const curState      = { a: 111, creditCard: "123", cvcode: "456", z:999 }
     const expectedState = { a: 111, creditCard: null,  cvcode: null,  z:999 } // clear sensitive data
     const nextState     = fields(curState, 
-                                 AC.saleComplete([1,2,3]))
+                                 AC.saleComplete("receiptId", [1,2,3]))
 
     expect(nextState)
           .toEqual(expectedState)

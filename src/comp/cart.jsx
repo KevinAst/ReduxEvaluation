@@ -85,12 +85,12 @@ class Cart$ extends MyReactComponent {
 //***
 
 const Cart = ReduxUtil.wrapCompWithInjectedProps(Cart$, {
-               mapStateToProps: (appState, ownProps) => {
+               mapStateToProps(appState, ownProps) {
                  return {
                    cartItems: appState.cart.cartItems,
                  }
                },
-               mapDispatchToProps: (dispatch, ownProps) => {
+               mapDispatchToProps(dispatch, ownProps) {
                  return {
                    closeCartFn:  ()              =>  { dispatch( AC.closeCart() ) },
                    changeQtyFn:  (cartItem, qty) =>  { if (qty>=0) dispatch( AC.setCartItemQty(cartItem, qty) ) },

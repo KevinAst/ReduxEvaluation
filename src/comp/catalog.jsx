@@ -50,13 +50,13 @@ const Catalog$ = ({items, filterCategory, changeFilterCategory}) => {
 //***
 
 const Catalog = ReduxUtil.wrapCompWithInjectedProps(Catalog$, {
-                  mapStateToProps: (appState, ownProps) => {
+                  mapStateToProps(appState, ownProps) {
                     return {
                       items:          appState.catalog.items,
                       filterCategory: appState.catalog.filterCategory,
                     }
                   },
-                  mapDispatchToProps: (dispatch, ownProps) => {
+                  mapDispatchToProps(dispatch, ownProps) {
                     return {
                       changeFilterCategory: (category) => { dispatch(AC.filterCatalogCategory(category)) },
                     }

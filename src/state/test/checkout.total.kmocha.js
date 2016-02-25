@@ -31,7 +31,7 @@ describe('appState.checkout.total reducer tests', () => {
   it('handle AC.saleComplete() Action', () => {
     const curState  = 55
     const nextState = total(curState, 
-                            AC.saleComplete([1,2,3]))
+                            AC.saleComplete("receiptId", [1,2,3]))
     const expectedState = null
 
     expect(nextState)

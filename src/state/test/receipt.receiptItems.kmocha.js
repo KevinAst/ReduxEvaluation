@@ -20,7 +20,7 @@ describe('appState.receipt.receiptItems reducer tests', () => {
 
     const curState      = [4,5,6]
     const nextState     = receiptItems(curState, 
-                                       AC.saleComplete([1,2,3]))
+                                       AC.saleComplete("receiptId", [1,2,3]))
     const expectedState = [1,2,3]
 
     expect(nextState)
