@@ -7,7 +7,7 @@ import { unitPrice }    from '../../util/money';
 import { appState }     from '../../state/appState'
 import { Provider }     from 'react-redux'
 import { createStore }  from 'redux'
-import * as AC          from '../../state/actionCreators'
+import { AC }           from '../../state/actions'
 const { renderIntoDocument, Simulate } = TestUtils;
 const DATA = require('../../../public/fake-api.json');
 

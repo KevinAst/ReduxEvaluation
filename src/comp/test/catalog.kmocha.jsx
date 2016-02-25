@@ -6,7 +6,7 @@ import { formatMoney } from 'accounting';
 import { appState }    from '../../state/appState'
 import { Provider }    from 'react-redux'
 import { createStore } from 'redux'
-import * as AC         from '../../state/actionCreators'
+import { AC }          from '../../state/actions'
 import Catalog         from '../catalog';
 const DATA = require('../../../public/fake-api.json'); // same fixture data browser sync is serving
 

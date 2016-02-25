@@ -2,7 +2,7 @@
 
 import { expect }         from '../../util/karma-setup';
 import { expandedItemId } from '../catalog.expandedItemId'
-import * as AC            from '../actionCreators'
+import { AC }             from '../actions'
 
 
 // ***

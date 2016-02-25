@@ -1,6 +1,6 @@
 'use strict';
 
-import * as AT from './actionTypes'
+import {AT} from './actions'
 
 // ***
 // *** appState.catalog.filterCategory reducer
@@ -9,7 +9,7 @@ import * as AT from './actionTypes'
 export const filterCategory = (filterCategory="", action) => {
   switch (action.type) {
 
-    case AT.FILTER_CATALOG_CATEGORY:
+    case AT.filterCatalogCategory:
       return action.category
 
     default:

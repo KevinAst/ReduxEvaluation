@@ -1,8 +1,8 @@
 'use strict';
 
 import { expect } from '../../util/karma-setup';
-import * as AT from '../actionTypes'
-import * as AC from '../actionCreators'
+import {AT, AC} from '../actions'
+
 
 // ***
 // *** all actionCreators tests ...
@@ -13,7 +13,7 @@ describe('actionCreators tests', () => {
   it('test buyItem()', () => {
     expect(AC.buyItem("MyItem"))
           .toEqual({
-              type: AT.BUY_ITEM,
+              type: AT.buyItem,
               item: "MyItem",
           })
   })
@@ -21,7 +21,7 @@ describe('actionCreators tests', () => {
   it('test catalogItemsDefined()', () => {
     expect(AC.catalogItemsDefined([1,2,3]))
           .toEqual({
-              type: AT.CATALOG_ITEMS_DEFINED,
+              type: AT.catalogItemsDefined,
               items: [1,2,3]
           })
   })
@@ -29,7 +29,7 @@ describe('actionCreators tests', () => {
   it('test checkout()', () => {
     expect(AC.checkout(123))
           .toEqual({
-              type:  AT.CHECKOUT,
+              type:  AT.checkout,
               total: 123
           })
   })
@@ -37,28 +37,28 @@ describe('actionCreators tests', () => {
   it('test closeCart()', () => {
     expect(AC.closeCart())
           .toEqual({
-              type: AT.CLOSE_CART,
+              type: AT.closeCart,
           })
   })
 
   it('test closeCheckout()', () => {
     expect(AC.closeCheckout())
           .toEqual({
-              type: AT.CLOSE_CHECKOUT,
+              type: AT.closeCheckout,
           })
   })
 
   it('test closeReceipt()', () => {
     expect(AC.closeReceipt())
           .toEqual({
-              type: AT.CLOSE_RECEIPT,
+              type: AT.closeReceipt,
           })
   })
 
   it('test filterCatalogCategory()', () => {
     expect(AC.filterCatalogCategory("MyCategory"))
           .toEqual({
-              type:     AT.FILTER_CATALOG_CATEGORY,
+              type:     AT.filterCatalogCategory,
               category: "MyCategory"
           })
   })
@@ -66,14 +66,14 @@ describe('actionCreators tests', () => {
   it('test openCart()', () => {
     expect(AC.openCart())
           .toEqual({
-              type: AT.OPEN_CART,
+              type: AT.openCart,
           })
   })
 
   it('test removeCartItem()', () => {
     expect(AC.removeCartItem("MyItem"))
           .toEqual({
-              type:     AT.REMOVE_CART_ITEM,
+              type:     AT.removeCartItem,
               cartItem: "MyItem",
           })
   })
@@ -81,7 +81,7 @@ describe('actionCreators tests', () => {
   it('test setCartItemQty()', () => {
     expect(AC.setCartItemQty("MyItem", 55))
           .toEqual({
-              type:     AT.SET_CART_ITEM_QTY,
+              type:     AT.setCartItemQty,
               cartItem: "MyItem",
               qty:      55
           })
@@ -90,7 +90,7 @@ describe('actionCreators tests', () => {
   it('test setCheckoutField()', () => {
     expect(AC.setCheckoutField("MyName", "MyValue"))
           .toEqual({
-              type:  AT.SET_CHECKOUT_FIELD,
+              type:  AT.setCheckoutField,
               name:  "MyName",
               value: "MyValue"
           })
@@ -99,7 +99,7 @@ describe('actionCreators tests', () => {
   it('test toggleItemDetail()', () => {
     expect(AC.toggleItemDetail("MyItem"))
           .toEqual({
-              type: AT.TOGGLE_ITEM_DETAIL,
+              type: AT.toggleItemDetail,
               item: "MyItem"
           })
   })

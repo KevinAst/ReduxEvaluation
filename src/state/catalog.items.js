@@ -1,6 +1,6 @@
 'use strict';
 
-import * as AT from './actionTypes'
+import {AT} from './actions'
 
 
 // ***
@@ -10,7 +10,7 @@ import * as AT from './actionTypes'
 export const items = (state=[], action) => {
   switch (action.type) {
 
-    case AT.CATALOG_ITEMS_DEFINED:
+    case AT.catalogItemsDefined:
       return action.items
 
     default:

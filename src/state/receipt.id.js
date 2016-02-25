@@ -1,6 +1,6 @@
 'use strict';
 
-import * as AT from './actionTypes'
+import {AT} from './actions'
 
 
 // ***
@@ -10,10 +10,10 @@ import * as AT from './actionTypes'
 export const id = (id=null, action) => {
   switch (action.type) {
 
-    case AT.SALE_COMPLETE:
+    case AT.saleComplete:
       return action.receiptId
 
-    case AT.CLOSE_RECEIPT:
+    case AT.closeReceipt:
       return null
 
     default:
