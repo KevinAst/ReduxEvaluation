@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {AT} from './actions'
 
@@ -7,13 +7,15 @@ import {AT} from './actions'
 // *** appState.catalog.items reducer
 // ***
 
-export const items = (state=[], action) => {
-  switch (action.type) {
+const reducers = { // our sub-reducers (in lieu of switch statement)
 
-    case AT.catalogItemsDefined:
-      return action.items
+  [AT.catalogItemsDefined](items, action) {
+    return action.items
+  },
 
-    default:
-      return state
-  }
+}
+
+export function items(items=[], action) {
+  const  reducer = reducers[action.type]
+  return reducer ? reducer(items, action) : items
 }
