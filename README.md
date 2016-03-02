@@ -87,6 +87,7 @@ are utilized in the specified DOM hierarchy:
       ... for each cartItem in cartItems
           <ItemRow item={cartItem}>
              <ItemDetails item={cartItem}/>
+             ... more html DOM children here (cart detail, ex: qty)
           </ItemRow>
     </Items>
   </Cart>
@@ -100,7 +101,7 @@ are utilized in the specified DOM hierarchy:
       ... for each receiptItem in receiptItems
           <ItemRow item={receiptItem}>
              <ItemDetails item={receiptItem}/>
-             ... more html DOM children here (receipt detail)
+             ... more html DOM children here (receipt detail, ex: qty)
           </ItemRow>
     </Items>
   </Receipt>
@@ -108,7 +109,7 @@ are utilized in the specified DOM hierarchy:
 </App>
 ```
 
-**Notice** that the `<Items>` and `<ItemRow>` component is re-used in various
+**Notice** that the `<Items>` and `<ItemRow>` components are re-used in various
 contexts.  Keep in mind that only the high-level basics are shown
 here.  If you dig in the code you will find additional properties that
 control the characteristics of these components in their varying contexts.
