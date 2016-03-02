@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-import React           from 'react';
+import React           from 'react'
 import { PropTypes }   from 'react'
-import { formatMoney } from 'accounting';
+import { formatMoney } from 'accounting'
 
 // ***
 // *** ItemDetails component
@@ -24,4 +24,4 @@ ItemDetails.propTypes = {
   item: PropTypes.object.isRequired,
 }
 
-export default ItemDetails;
+export default ItemDetails

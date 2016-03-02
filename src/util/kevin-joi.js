@@ -1,44 +1,44 @@
-'use strict';
+'use strict'
 
-import Joi from 'joi-browser';
+import Joi from 'joi-browser'
 
 // provide Joi.validate() enhancement supporting following option(s):
 //   kevinSaysPruneDupPaths: true/false ... only emit the first of potentially may errors per field (i.e. path)
 if (!Joi.kevinOriginalValidate) {
 
   // retain original definition
-  Joi.kevinOriginalValidate = Joi.validate;
+  Joi.kevinOriginalValidate = Joi.validate
 
   // provide our override shim
   Joi.validate = function(...args) {
-    const [value, schema, options, callback] = args;
+    const [value, schema, options, callback] = args
 
     // interpret our value added directive(s) from options
-    const kevinSaysPruneDupPaths = "kevinSaysPruneDupPaths";
-    let   pruneDupPaths = false;
+    const kevinSaysPruneDupPaths = "kevinSaysPruneDupPaths"
+    let   pruneDupPaths = false
     if (options && options.hasOwnProperty(kevinSaysPruneDupPaths)) {
-      pruneDupPaths = options[kevinSaysPruneDupPaths];
+      pruneDupPaths = options[kevinSaysPruneDupPaths]
       // must remove these additional options, as Joi balks at unrecognized options
-      const didDelete = delete options.kevinSaysPruneDupPaths;
+      const didDelete = delete options.kevinSaysPruneDupPaths
     }
 
     // pass through to the original Joi.validate
-    const joiResult = Joi.kevinOriginalValidate(...args);
+    const joiResult = Joi.kevinOriginalValidate(...args)
 
     // post-process our value added directives
     if (pruneDupPaths && joiResult.error) {
       joiResult.error.details = joiResult.error.details.filter( (elm, indx, arr) => {
-        return indx === 0 || elm.path !== arr[indx-1].path;
-      });
+        return indx === 0 || elm.path !== arr[indx-1].path
+      })
     }
 
     // beam me up scotty :-)
-    return joiResult;
-  };
+    return joiResult
+  }
 
 }
 
-export default Joi;
+export default Joi
 
 // Joi FAILS to document validate() return structure
 // ... grrr

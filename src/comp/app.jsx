@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-import React     from 'react';
+import React     from 'react'
 import ReduxUtil from '../util/redux-util'
-import Catalog   from './catalog';
-import Cart      from './cart';
-import Checkout  from './checkout';
-import Receipt   from './receipt';
+import Catalog   from './catalog'
+import Cart      from './cart'
+import Checkout  from './checkout'
+import Receipt   from './receipt'
 import {AC}      from '../state/actions'
 
 
@@ -46,4 +46,4 @@ const App = ReduxUtil.wrapCompWithInjectedProps(
 App.propTypes = {
 }
 
-export default App;
+export default App

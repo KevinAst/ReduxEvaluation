@@ -31,7 +31,7 @@ class Esc {
 
     // no-op if key is NOT escape
     if (e.keyCode !== ESC_KEY)
-      return;
+      return
 
     // process most recent ESC handler (if any)
     if (_escKeyHandlers.length) {

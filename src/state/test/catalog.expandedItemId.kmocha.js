@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-import { expect }         from '../../util/karma-setup';
+import { expect }         from '../../util/karma-setup'
 import { expandedItemId } from '../catalog.expandedItemId'
 import { AC }             from '../actions'
 
@@ -21,7 +21,7 @@ describe('appState.catalog.expandedItemId reducer tests', () => {
     const item1 = {id:1}
     const item2 = {id:2}
 
-    const curState  = item1.id;
+    const curState  = item1.id
     const nextState = expandedItemId(curState, 
                                      AC.toggleItemDetail(item1))
     const expectedState = null
@@ -37,7 +37,7 @@ describe('appState.catalog.expandedItemId reducer tests', () => {
     const item2 = {id:2}
 
     // transition expansion from item1 to item2
-    const curState  = item1.id;
+    const curState  = item1.id
     const nextState = expandedItemId(curState, 
                                      AC.toggleItemDetail(item2))
     const expectedState = item2.id
@@ -55,7 +55,7 @@ describe('appState.catalog.expandedItemId reducer tests', () => {
 //  const item2 = {id:2}
 //
 //  // transition expansion when buying any item
-//  const curState  = item1;
+//  const curState  = item1
 //  const nextState = expandedItemId(curState, 
 //                                   AC.buyItem(item2))
 //  const expectedState = null
@@ -67,7 +67,7 @@ describe('appState.catalog.expandedItemId reducer tests', () => {
 
   it('should ignore unrelated Actions', () => {
 
-    const curState  = {id:1};
+    const curState  = {id:1}
     const nextState = expandedItemId(curState, 
                                      { type: 'URELATED_ACTION'})
     const expectedState = curState

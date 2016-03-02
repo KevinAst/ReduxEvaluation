@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-import { expect } from '../../util/karma-setup';
+import {expect} from '../../util/karma-setup'
 import {AT, AC} from '../actions'
 
 

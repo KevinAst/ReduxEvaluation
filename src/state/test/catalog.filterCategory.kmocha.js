@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-import { expect }         from '../../util/karma-setup';
+import { expect }         from '../../util/karma-setup'
 import { filterCategory } from '../catalog.filterCategory'
 import { AC }             from '../actions'
 
@@ -33,7 +33,7 @@ describe('appState.catalog.filterCategory reducer tests', () => {
 
   it('should ignore unrelated Actions', () => {
 
-    const curState  = "Hmmm";
+    const curState  = "Hmmm"
     const nextState = filterCategory(curState, 
                                      { type: 'URELATED_ACTION'})
     const expectedState = curState
