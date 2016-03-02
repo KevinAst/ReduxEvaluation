@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {AT} from './actions'
 
@@ -6,13 +6,15 @@ import {AT} from './actions'
 // *** appState.catalog.filterCategory reducer
 // ***
 
-export const filterCategory = (filterCategory="", action) => {
-  switch (action.type) {
+const reducers = { // our sub-reducers (in lieu of switch statement)
 
-    case AT.filterCatalogCategory:
-      return action.category
+  [AT.filterCatalogCategory](filterCategory, action) {
+    return action.category
+  },
 
-    default:
-      return filterCategory
-  }
+}
+
+export function filterCategory(filterCategory="", action) {
+  const  reducer = reducers[action.type]
+  return reducer ? reducer(filterCategory, action) : filterCategory
 }

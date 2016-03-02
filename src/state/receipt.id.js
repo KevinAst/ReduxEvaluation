@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {AT} from './actions'
 
@@ -7,16 +7,19 @@ import {AT} from './actions'
 // *** appState.receipt.id reducer
 // ***
 
-export const id = (id=null, action) => {
-  switch (action.type) {
+const reducers = { // our sub-reducers (in lieu of switch statement)
 
-    case AT.saleComplete:
-      return action.receiptId
+  [AT.saleComplete](id, action) {
+    return action.receiptId
+  },
 
-    case AT.closeReceipt:
-      return null
+  [AT.closeReceipt](id, action) {
+    return null
+  },
 
-    default:
-      return id
-  }
+}
+
+export function id(id=null, action) {
+  const  reducer = reducers[action.type]
+  return reducer ? reducer(id, action) : id
 }

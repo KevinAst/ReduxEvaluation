@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {AT} from './actions'
 
@@ -7,22 +7,31 @@ import {AT} from './actions'
 // *** appState.checkout.fields reducer
 // ***
 
-export const fields = (fields={}, action) => {
-  switch (action.type) {
+const reducers = { // our sub-reducers (in lieu of switch statement)
 
-    case AT.closeCheckout:
-    case AT.saleComplete:
-      return Object.assign({}, fields, {
-               creditCard: null, // clear sensitive data
-               cvcode:     null, // clear sensitive data
-             });
+  [AT.closeCheckout](fields, action) {
+    return Object.assign({}, fields, {
+             creditCard: null, // clear sensitive data
+             cvcode:     null, // clear sensitive data
+           })
+  },
 
-    case AT.setCheckoutField:
-      return Object.assign({}, fields, {
-               [action.name]: action.value
-             });
+  [AT.saleComplete](fields, action) {
+    return Object.assign({}, fields, {
+             creditCard: null, // clear sensitive data
+             cvcode:     null, // clear sensitive data
+           })
+  },
 
-    default:
-      return fields
-  }
+  [AT.setCheckoutField](fields, action) {
+    return Object.assign({}, fields, {
+             [action.name]: action.value
+           })
+  },
+
+}
+
+export function fields(fields={}, action) {
+  const  reducer = reducers[action.type]
+  return reducer ? reducer(fields, action) : fields
 }

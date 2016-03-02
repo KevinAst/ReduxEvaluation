@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 import {AT} from './actions'
 
@@ -7,19 +7,13 @@ import {AT} from './actions'
 // *** appState.checkout.visible reducer
 // ***
 
-export const visible = (visible=false, action) => {
-  switch (action.type) {
+const reducers = { // our sub-reducers (in lieu of switch statement)
+  [AT.checkout]      (visible, action) { return true  },
+  [AT.closeCheckout] (visible, action) { return false },
+  [AT.saleComplete]  (visible, action) { return false },
+}
 
-    case AT.checkout:
-      return true
-
-    case AT.closeCheckout:
-      return false
-
-    case AT.saleComplete:
-      return false
-
-    default:
-      return visible
-  }
+export function visible(visible=false, action) {
+  const  reducer = reducers[action.type]
+  return reducer ? reducer(visible, action) : visible
 }
