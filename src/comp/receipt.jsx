@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-import React                     from 'react';
+import React                     from 'react'
 import ReduxUtil                 from '../util/redux-util'
-import MyReactComponent          from '../util/my-react-component';
-import ItemRow                   from './item-row';
-import { totalItems, unitPrice } from '../util/money';
-import { formatMoney }           from 'accounting';
-import Esc                       from '../util/esc';
+import MyReactComponent          from '../util/my-react-component'
+import Items                     from './items'
+import { totalItems, unitPrice } from '../util/money'
+import { formatMoney }           from 'accounting'
+import Esc                       from '../util/esc'
 import {AC}                      from '../state/actions'
 
 
@@ -18,40 +18,39 @@ import {AC}                      from '../state/actions'
 class Receipt$ extends MyReactComponent {
 
   componentDidMount() {
-    Esc.regEscHandler(this.props.closeReceiptFn);
+    Esc.regEscHandler(this.props.closeReceiptFn)
   }
 
   componentWillUnmount() {
-    Esc.unregEscHandler(this.props.closeReceiptFn);
+    Esc.unregEscHandler(this.props.closeReceiptFn)
   }
 
   render() {
-    const { receiptItems, receiptId, closeReceiptFn } = this.props;
+    const { receiptItems, receiptId, closeReceiptFn } = this.props
 
-    return (
-      <div className="modal receipt">
-        <button className="close" onClick={closeReceiptFn}>Close</button>
-        <h1>Receipt</h1>
-        <div className="receiptNumber">
-          Receipt#: <span className="receiptId">{ receiptId }</span>
-        </div>
-        <ul>
-          { receiptItems.map(receiptItem =>
-            <ItemRow key={receiptItem.id}
-                     item={receiptItem} >
-              <span className="qty">Quantity:
-                <span className="qtyValue">{ receiptItem.qty }</span>
-              </span>
-              <span className="lineTotal">
-                { formatMoney(unitPrice(receiptItem.price, receiptItem.qty)) }
-              </span>
-            </ItemRow> ) }
-        </ul>
-        <div className="total">Total:
-          <span className="formattedTotal">{ formatMoney(totalItems(receiptItems)) }</span>
-        </div>
-      </div>
-    );
+    const additionalContentPerItemFn = (receiptItem) => {
+      return <span>
+               <span className="qty">Quantity:
+                 <span className="qtyValue">{ receiptItem.qty }</span>
+               </span>
+               <span className="lineTotal">
+                 { formatMoney(unitPrice(receiptItem.price, receiptItem.qty)) }
+               </span>
+             </span>
+    }
+
+    return <div className="modal receipt">
+             <button className="close" onClick={closeReceiptFn}>Close</button>
+             <h1>Receipt</h1>
+             <div className="receiptNumber">
+               Receipt#: <span className="receiptId">{ receiptId }</span>
+             </div>
+             <Items items={receiptItems}
+                    additionalContentPerItemFn={additionalContentPerItemFn}/>
+             <div className="total">Total:
+               <span className="formattedTotal">{ formatMoney(totalItems(receiptItems)) }</span>
+             </div>
+           </div>
   }
 }
 
@@ -73,10 +72,10 @@ const Receipt = ReduxUtil.wrapCompWithInjectedProps(Receipt$, {
                       closeReceiptFn: (e) =>  { dispatch( AC.closeReceipt() ) },
                     }
                   }
-                });
+                })
 
 // define expected props
 Receipt.propTypes = {
 }
 
-export default Receipt;
+export default Receipt

@@ -74,21 +74,21 @@ are utilized in the specified DOM hierarchy:
 <App>
 
   <Catalog>
-    <ul>
-      ... iterate over appState.catalog.items
+    <Items items={appState.catalog.items}>
+      ... for each item in items
           <ItemRow item={item}>
              <ItemDetails item={item}/>
           </ItemRow>
-    </ul>
+    </Items>
   </Catalog>
 
   <Cart> ... conditionally rendered based on appState.cart.visible
-    <ul>
-      ... iterate over appState.cart.cartItems
+    <Items items={appState.cart.cartItems}>
+      ... for each cartItem in cartItems
           <ItemRow item={cartItem}>
              <ItemDetails item={cartItem}/>
           </ItemRow>
-    </ul>
+    </Items>
   </Cart>
 
   <Checkout> ... conditionally rendered based on appState.checkout.visible
@@ -96,26 +96,22 @@ are utilized in the specified DOM hierarchy:
   </Checkout>
 
   <Receipt> ... conditionally rendered based on appState.receipt.id
-    <ul>
-      ... iterate over appState.receipt.receiptItems
+    <Items items={appState.receipt.receiptItems}>
+      ... for each receiptItem in receiptItems
           <ItemRow item={receiptItem}>
              <ItemDetails item={receiptItem}/>
              ... more html DOM children here (receipt detail)
           </ItemRow>
-    </ul>
+    </Items>
   </Receipt>
 
 </App>
 ```
 
-**Notice** that the `<ItemRow>` component is re-used in various
+**Notice** that the `<Items>` and `<ItemRow>` component is re-used in various
 contexts.  Keep in mind that only the high-level basics are shown
 here.  If you dig in the code you will find additional properties that
-control the characteristics of `<ItemRow>` in these varying contexts.
-
-In looking at this summary, it seems there may be a need for an
-`<Items>` component :-)
-
+control the characteristics of these components in their varying contexts.
 
 
 ## App State
