@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const USStates = [
   { value: 'AL', label: 'Alabama' },
@@ -52,6 +52,6 @@ const USStates = [
   { value: 'WV', label: 'West Virginia' },
   { value: 'WI', label: 'Wisconsin' },
   { value: 'WY', label: 'Wyoming' },
-];
+]
 
-export default USStates;
+export default USStates

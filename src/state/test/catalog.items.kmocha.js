@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-import { expect } from '../../util/karma-setup';
+import { expect } from '../../util/karma-setup'
 import { items }  from '../catalog.items'
 import { AC }     from '../actions'
 
@@ -18,7 +18,7 @@ describe('appState.catalog.items reducer tests', () => {
 
   it('should handle AC.catalogItemsDefined() Action', () => {
 
-    let curState  = [4,5,6];
+    let curState  = [4,5,6]
     let nextState = items(curState, 
                           AC.catalogItemsDefined([1,2,3]))
     let expectedState = [1,2,3]
@@ -31,7 +31,7 @@ describe('appState.catalog.items reducer tests', () => {
 
   it('should ignore unrelated Actions', () => {
 
-    let curState  = [4,5,6];
+    let curState  = [4,5,6]
     let nextState = items(curState, 
                           { type: 'URELATED_ACTION'})
     let expectedState = curState

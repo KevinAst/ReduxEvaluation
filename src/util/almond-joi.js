@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-import Joi from 'joi-browser';
-import crc from 'crc';
+import Joi from 'joi-browser'
+import crc from 'crc'
 
 
 /**
@@ -90,7 +90,7 @@ import crc from 'crc';
  *                  consolidatedMsg: "zip is required: format: ddddd[-dddd]" },
  *    email:      { joi: Joi.string().email().required(),
  *                  consolidatedMsg: "Email is required and must be a valid email address" },
- *  });
+ *  })
  * 
  * The optional consolidatedMsg is used to promote a single message that
  * summarizes the entire requirements of a field validation.
@@ -136,19 +136,19 @@ class AlmondJoi {
   constructor(mySchema, reactComp) { // [reacComp] - optional React Component (when supplied can coordinate re-rendering)
 
     if (!mySchema) {
-      throw new Error("ERROR: AlmondJoi() mySchema parameter is required");
+      throw new Error("ERROR: AlmondJoi() mySchema parameter is required")
     }
 
     // extract joiSchemaObj and cntl from mySchema
-    const joiSchemaObj = {};
-    const cntl = this.cntl = {};
-    const fields = this.fields = Object.getOwnPropertyNames(mySchema);
+    const joiSchemaObj = {}
+    const cntl = this.cntl = {}
+    const fields = this.fields = Object.getOwnPropertyNames(mySchema)
     for (const field of fields) {
-      const myObj = mySchema[field];
+      const myObj = mySchema[field]
       if (!myObj.joi) {
-        throw new Error(`ERROR: AlmondJoi() mySchema.${field} requires a joi object`);
+        throw new Error(`ERROR: AlmondJoi() mySchema.${field} requires a joi object`)
       }
-      joiSchemaObj[field] = myObj.joi;
+      joiSchemaObj[field] = myObj.joi
 
       cntl[field] = {
         consolidatedMsg: myObj.consolidatedMsg, // <optional> null/undefined for none
@@ -157,46 +157,46 @@ class AlmondJoi {
         beingValidated:  myObj.beingValidated ? true : false,  // <boolean> is field being validated
         detailedMsgs:    [],     // detailed joi msgs per field <string[]> (joiResult.error.details[x].message)
                                  // ... empty array for valid field
-      };
+      }
 
     }
 
     // retain various items in self
-    this._joiSchema       = Joi.object().keys(joiSchemaObj); // our internal compiled joiSchema
-    this._validationState = null;       // our current validation state (suitable to determine if React needs to re-generate)
-    this._reactComp       = reactComp;  // the optional React Component (when supplied can coordinate re-rendering)
+    this._joiSchema       = Joi.object().keys(joiSchemaObj) // our internal compiled joiSchema
+    this._validationState = null       // our current validation state (suitable to determine if React needs to re-generate)
+    this._reactComp       = reactComp  // the optional React Component (when supplied can coordinate re-rendering)
 
     // initialize remaining state
-    _firstFieldInError.set(this, null);
-    _allProminentMsgs.set(this, []);
+    _firstFieldInError.set(this, null)
+    _allProminentMsgs.set(this, [])
   }
  
   fieldHasChanged(field) {
-    const cntlField = this.cntlField(field);
+    const cntlField = this.cntlField(field)
 
-    cntlField.hasChanged = true;
+    cntlField.hasChanged = true
     
     // NO NO NO: we only want to start initial validation, when user leaves the field (visited)
     // if (cntlField.hasVisited)
-    //   cntlField.beingValidated = true;
+    //   cntlField.beingValidated = true
   }
 
   fieldHasBeenVisited(field) {
-    const cntlField = this.cntlField(field);
+    const cntlField = this.cntlField(field)
 
-    cntlField.hasVisited = true;
+    cntlField.hasVisited = true
 
     // dynamically start validating field if it has been changed by the user, and has been visited
     // ... stimulating deterministic validation
     if (cntlField.hasChanged)
-      cntlField.beingValidated = true;
+      cntlField.beingValidated = true
   }
 
   // force  all fields to be validated (from this point forward)
   // ... typically invoked in a pre-process-form-request (just prior to validate())
   activateAllValidation() { 
     for (const field of this.fields) {
-      this.cntl[field].beingValidated = true;
+      this.cntl[field].beingValidated = true
     }
     // TODO: how do we insure that client invokes validate() after this?
     //       1) NO:  call it validateAll(fieldValues)
@@ -220,71 +220,71 @@ class AlmondJoi {
                                     this._joiSchema,
                                     { // TODO: provide AlmondJoi client hooks to change these options
                                       abortEarly: false, // give us all the errors at once (both for all fields and multiple errors per field)
-                                    });
+                                    })
 
     // post process joiResult
     // ... clear all prior messages
-    let allProminentMsgs = [];
+    let allProminentMsgs = []
     for (const field of this.fields) {
-      this.cntl[field].detailedMsgs = [];
+      this.cntl[field].detailedMsgs = []
     }
     // ... retain new joiResult, and accumulate our validationState
-    let validationState   = crc.crc32("AlmondJoi:validationState");
-    let firstFieldInError = null;
+    let validationState   = crc.crc32("AlmondJoi:validationState")
+    let firstFieldInError = null
     if (joiResult.error) { // something was invalid
       for (const detail of joiResult.error.details) {
-        const path = detail.path;
+        const path = detail.path
         if (!firstFieldInError) {
-          firstFieldInError = path;
+          firstFieldInError = path
         }
         if (this.cntl[path].beingValidated) {
-          this.cntl[path].detailedMsgs.push(detail.message);
+          this.cntl[path].detailedMsgs.push(detail.message)
           if (this.cntl[path].detailedMsgs.length === 1) // allProminentMsgs only contain the first msg per field
-            allProminentMsgs.push( this.cntl[path].consolidatedMsg || detail.message);
-          validationState = crc.crc32(detail.message, validationState);
+            allProminentMsgs.push( this.cntl[path].consolidatedMsg || detail.message)
+          validationState = crc.crc32(detail.message, validationState)
         }
       }
     }
-    validationState = validationState.toString(16);
-    _firstFieldInError.set(this, firstFieldInError);
-    _allProminentMsgs.set(this, allProminentMsgs);
+    validationState = validationState.toString(16)
+    _firstFieldInError.set(this, firstFieldInError)
+    _allProminentMsgs.set(this, allProminentMsgs)
 
     // as a convenience, optionally coordinate React re-renders
     if (this._reactComp &&                         // ... if our optional React Component has been supplied,
       validationState !== this._validationState) { //     and our validaion has changed,
-      this._reactComp.forceUpdate();               // ask React to force an update (to visualize the errors)
+      this._reactComp.forceUpdate()               // ask React to force an update (to visualize the errors)
     }
 
     // retain our current validation state
-    this._validationState = validationState;
+    this._validationState = validationState
 
     // that's all folks :-)
-    // console.log("validationState: " + validationState);
+    // console.log("validationState: " + validationState)
     return validationState
   }
 
   // return indicator as to ALL fields are valid [or NOT being validated] (true) or invalid (false)
   isValid() {
-    return this.allProminentMsgs().length === 0;
+    return this.allProminentMsgs().length === 0
   }
 
   // return the first field name in error <String>
   // ... null for valid
   firstFieldInError() {
-    return  _firstFieldInError.get(this);
+    return  _firstFieldInError.get(this)
   }
 
   // return all prominent msgs spanning all fields (one per field)
   // ... using optional consolidatedMsg (when defined) or first detailedMsg
   // ... empty array for valid
   allProminentMsgs() {
-    return  _allProminentMsgs.get(this);
+    return  _allProminentMsgs.get(this)
   }
 
   // return indicator as to whether supplied field is valid [or NOT being validated] (true) or invalid (false)
   isFieldValid(field) {
-    const cntlField = this.cntlField(field);
-    return (!cntlField.beingValidated || cntlField.detailedMsgs.length === 0) ? true : false;
+    const cntlField = this.cntlField(field)
+    return (!cntlField.beingValidated || cntlField.detailedMsgs.length === 0) ? true : false
   }
 
   // return the most prominent error message (if any) for the given field
@@ -292,9 +292,9 @@ class AlmondJoi {
   // ... "" for valid (or field not yet being validated)
   prominentFieldMsg(field) {
     if (this.isFieldValid(field))
-      return "";
-    const  cntlField = this.cntlField(field);
-    return cntlField.consolidatedMsg || cntlField.detailedMsgs[0];
+      return ""
+    const  cntlField = this.cntlField(field)
+    return cntlField.consolidatedMsg || cntlField.detailedMsgs[0]
   }
 
   // return the initial joi detailed error message (if any) for the
@@ -302,34 +302,34 @@ class AlmondJoi {
   // ... "" for valid (or field not yet being validated)
   detailedFieldMsg(field) {
     if (this.isFieldValid(field))
-      return "";
-    const  cntlField = this.cntlField(field);
-    return cntlField.detailedMsgs[0];
+      return ""
+    const  cntlField = this.cntlField(field)
+    return cntlField.detailedMsgs[0]
   }
 
   // return all the joi detailed error messages (if any) for the
   // given field, describing specific violations
   // ... [] for valid (or field not yet being validated)
   detailedFieldMsgs(field) {
-    const  cntlField = this.cntlField(field);
-    return cntlField.detailedMsgs;
+    const  cntlField = this.cntlField(field)
+    return cntlField.detailedMsgs
   }
 
   // INTERNAL
   cntlField(field) {
-    const cntlField = this.cntl[field];
+    const cntlField = this.cntl[field]
     if (!cntlField)
-      throw new Error(`ERROR: AlmondJoi NON-EXISTANT field ${field}`);
-    return cntlField;
+      throw new Error(`ERROR: AlmondJoi NON-EXISTANT field ${field}`)
+    return cntlField
   }      
 
 }
 
 // private members
-const _firstFieldInError = new WeakMap(); // <String> 
-const _allProminentMsgs  = new WeakMap(); // <String[]>
+const _firstFieldInError = new WeakMap() // <String> 
+const _allProminentMsgs  = new WeakMap() // <String[]>
 
-export default AlmondJoi;
+export default AlmondJoi
 
 // Joi FAILS to document validate() return structure
 // ... grrr
