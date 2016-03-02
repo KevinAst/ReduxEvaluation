@@ -333,38 +333,40 @@ In our new refactored approach:
  - In addition, any component can dispatch well-defined business
    actions that formally alter the app state.
 
-**Under the covers**, we still utilize component properties internally
+**Under the covers**, we still utilize component properties **internally**
 (both data and behavior) to keep our React components simple.  It's
 just that these properties are dynamically injected at the component
 level.  This can roughly be thought of as a type of Dependency
 Injection (*although not managed by an external agent*).
 
 Take a look at the [`<Catalog>`](src/comp/catalog.jsx) component.  In
-essence we wrap an internal private component (`Catalog$`) with a
-publicly promoted component (`Catalog`) that:
+essence we wrap an internal private anonymous component with a
+publicly promoted `<Catalog>` component that:
  - has access to our Redux appState and dispatch()
  - and dynamically injects the needed properties (both data and
    behavior) to the internal component
 
 This is a slight twist on what Redux calls the "containing component"
-(e.g. our public `Catalog`), and the "presentation component"
-(e.g. our internal `Catalog$`).
+(e.g. our public `<Catalog>`), and the "presentation component"
+(e.g. our internal anonymous component).
 
 Components can still require public properties passed to them from
 their parent component, but this is used for finer-grained control
 that is not based on state, and is somewhat rare.  Each component
 declares it's expected properties, through the standard `propTypes`
-React mechanism.  
+React mechanism.
 
 > As an example [`<ItemRow>`](src/comp/item-row.jsx) has to be told what
 > item it is rendering (through the "item" property).  This can't be
 > defined from state because there are many items, rather the parent
-> `<Catalog>` iterates through all items rendering an `<ItemRow
+> `<Items>` iterates through all items rendering an `<ItemRow
 > item={item}/>` for each.
 
-In summary, component property that are fundamentally based on state
-can be handled internally. For other non-state characteristics, a
-property can be passed from parent to child.
+**In summary**
+ - component properties that are fundamentally based on state can be
+   handled internally
+ - for other non-state characteristics, a property can be passed from
+   parent to child
 
 
 ### Redux Example
@@ -372,8 +374,8 @@ property can be passed from parent to child.
 As an example, in our old logic, the
 [App](../PlainReact/src/comp/app.jsx) component had an App.buyItem()
 function that had to be passed from `<App>` through `<Catalog>` into
-`<ItemRow>` where the Buy button was located.  Under the new
-refactored code, the buyItemFn() lives directly in
+`<Items>` and finally `<ItemRow>` where the Buy button was located.
+Under the new refactored code, the buyItemFn() lives directly in
 [`<ItemRow>`](../ReduxReact/src/comp/item-row.jsx) injected by our
 Redux process.  **In addition**, it's implementation is a single line
 that dispatches a well-known action.  **No fuss, No muss.**
@@ -385,7 +387,7 @@ consistent **following a well established repeating pattern**.
 The change in our top-level `<App>` component was **so dramatic** that it
 went from a class with 15 methods and over 300 lines **(found
 [here](../PlainReact/src/comp/app.jsx))** to a React functional
-component with an **extremely simple process** rendering 9 DOM lines
+component with an **extremely simple process** rendering 9 lines of DOM
 **(found [here](../ReduxReact/src/comp/app.jsx))**.
 
 The end result is our code is much easier to follow.  Property passing

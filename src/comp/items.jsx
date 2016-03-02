@@ -10,37 +10,35 @@ import ItemRow         from './item-row'
 // *** Items component
 // ***
 
-// our internal Items$ class (wrapped with Items below)
-const Items$ = ({items, className, allowDetails, allowBuy, additionalContentPerItemFn}) => {
-  return <ul className={className}>
-           { items.map(item => (
-               <ItemRow key={item.id}
-                        item={item}
-                        allowDetails={allowDetails}
-                        allowBuy={allowBuy}>
-                 { additionalContentPerItemFn && additionalContentPerItemFn(item) }
-               </ItemRow>
-             ))
-           }
-         </ul>
-}
 
+const Items = ReduxUtil.wrapCompWithInjectedProps(
 
-//***
-//*** wrap our internal Items$ class with a public Items class
-//*** that injects properties (both data and behavior) from our state.
-//***
+  function({items, className, allowDetails, allowBuy, additionalContentPerItemFn}) { // component definition (functional)
 
-const Items = ReduxUtil.wrapCompWithInjectedProps(Items$, {
-  mapStateToProps(appState, ownProps) {
-    return {
+    return <ul className={className}>
+             { items.map(item => (
+                 <ItemRow key={item.id}
+                          item={item}
+                          allowDetails={allowDetails}
+                          allowBuy={allowBuy}>
+                   { additionalContentPerItemFn && additionalContentPerItemFn(item) }
+                 </ItemRow>
+               ))
+             }
+           </ul>
+
+  }, // end of ... component definition
+
+  { // component property injection
+    mapStateToProps(appState, ownProps) {
+      return {
+      }
+    },
+    mapDispatchToProps(dispatch, ownProps) {
+      return {
+      }
     }
-  },
-  mapDispatchToProps(dispatch, ownProps) {
-    return {
-    }
-  }
-})
+  }) // end of ... component property injection
 
 // define expected props
 Items.propTypes = {

@@ -13,41 +13,34 @@ import {AC}      from '../state/actions'
 // *** App component (our top-level)
 // ***
 
-// our internal App$ class (wrapped with App below)
-const App$ = ({cartVisible, checkoutVisible, receiptId, openCartFn}) => {
-  return <div>
-           <span className="cartButton">
-             <a onClick={openCartFn}>Cart</a>
-           </span>
-           <Catalog/>
-           { cartVisible     && <Cart/> }
-           { checkoutVisible && <Checkout/> }
-           { receiptId       && <Receipt/> }
-         </div>
-}
+const App = ReduxUtil.wrapCompWithInjectedProps(
 
+  function({cartVisible, checkoutVisible, receiptId, openCartFn}) { // component definition (functional)
+    return <div>
+             <span className="cartButton">
+               <a onClick={openCartFn}>Cart</a>
+             </span>
+             <Catalog/>
+             { cartVisible     && <Cart/> }
+             { checkoutVisible && <Checkout/> }
+             { receiptId       && <Receipt/> }
+           </div>
+  }, // end of ... component definition
 
-
-//***
-//*** wrap our internal App$ class with a public App class
-//*** that injects properties (both data and behavior) from our state.
-//***
-
-const App = ReduxUtil.wrapCompWithInjectedProps(App$, {
-              mapStateToProps(appState, ownProps) {
-                return {
-                  cartVisible:     appState.cart.visible,
-                  checkoutVisible: appState.checkout.visible,
-                  receiptId:       appState.receipt.id,
-                }
-              },
-              mapDispatchToProps(dispatch, ownProps) {
-                return {
-                  openCartFn: () =>  { dispatch(AC.openCart()) },
-                }
-              }
-            });
-
+  { // component property injection
+    mapStateToProps(appState, ownProps) {
+      return {
+        cartVisible:     appState.cart.visible,
+        checkoutVisible: appState.checkout.visible,
+        receiptId:       appState.receipt.id,
+      }
+    },
+    mapDispatchToProps(dispatch, ownProps) {
+      return {
+        openCartFn: () =>  { dispatch(AC.openCart()) },
+      }
+    }
+  }) // end of ... component property injection
 
 // define expected props
 App.propTypes = {

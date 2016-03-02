@@ -14,65 +14,60 @@ import {AC}                      from '../state/actions'
 // *** Receipt component
 // ***
 
-// our internal Receipt$ class (wrapped with Receipt below)
-class Receipt$ extends MyReactComponent {
+const Receipt = ReduxUtil.wrapCompWithInjectedProps(
 
-  componentDidMount() {
-    Esc.regEscHandler(this.props.closeReceiptFn)
-  }
+  class extends MyReactComponent { // component definition
 
-  componentWillUnmount() {
-    Esc.unregEscHandler(this.props.closeReceiptFn)
-  }
-
-  render() {
-    const { receiptItems, receiptId, closeReceiptFn } = this.props
-
-    const additionalContentPerItemFn = (receiptItem) => {
-      return <span>
-               <span className="qty">Quantity:
-                 <span className="qtyValue">{ receiptItem.qty }</span>
-               </span>
-               <span className="lineTotal">
-                 { formatMoney(unitPrice(receiptItem.price, receiptItem.qty)) }
-               </span>
-             </span>
+    componentDidMount() {
+      Esc.regEscHandler(this.props.closeReceiptFn)
     }
 
-    return <div className="modal receipt">
-             <button className="close" onClick={closeReceiptFn}>Close</button>
-             <h1>Receipt</h1>
-             <div className="receiptNumber">
-               Receipt#: <span className="receiptId">{ receiptId }</span>
-             </div>
-             <Items items={receiptItems}
-                    additionalContentPerItemFn={additionalContentPerItemFn}/>
-             <div className="total">Total:
-               <span className="formattedTotal">{ formatMoney(totalItems(receiptItems)) }</span>
-             </div>
-           </div>
-  }
-}
+    componentWillUnmount() {
+      Esc.unregEscHandler(this.props.closeReceiptFn)
+    }
 
+    render() {
+      const { receiptItems, receiptId, closeReceiptFn } = this.props
 
-//***
-//*** wrap our internal Receipt$ class with a public Receipt class
-//*** that injects properties (both data and behavior) from our state.
-//***
+      const additionalContentPerItemFn = (receiptItem) => {
+        return <span>
+          <span className="qty">Quantity:
+            <span className="qtyValue">{ receiptItem.qty }</span>
+          </span>
+          <span className="lineTotal">
+            { formatMoney(unitPrice(receiptItem.price, receiptItem.qty)) }
+          </span>
+        </span>
+      }
 
-const Receipt = ReduxUtil.wrapCompWithInjectedProps(Receipt$, {
-                  mapStateToProps(appState, ownProps) {
-                    return {
-                      receiptItems: appState.receipt.receiptItems,
-                      receiptId:    appState.receipt.id,
-                    }
-                  },
-                  mapDispatchToProps(dispatch, ownProps) {
-                    return {
-                      closeReceiptFn: (e) =>  { dispatch( AC.closeReceipt() ) },
-                    }
-                  }
-                })
+      return <div className="modal receipt">
+          <button className="close" onClick={closeReceiptFn}>Close</button>
+          <h1>Receipt</h1>
+          <div className="receiptNumber">
+            Receipt#: <span className="receiptId">{ receiptId }</span>
+          </div>
+          <Items items={receiptItems}
+                 additionalContentPerItemFn={additionalContentPerItemFn}/>
+          <div className="total">Total:
+            <span className="formattedTotal">{ formatMoney(totalItems(receiptItems)) }</span>
+          </div>
+      </div>
+    }
+  }, // end of ... component definition
+
+  { // component property injection
+    mapStateToProps(appState, ownProps) {
+      return {
+        receiptItems: appState.receipt.receiptItems,
+        receiptId:    appState.receipt.id,
+      }
+    },
+    mapDispatchToProps(dispatch, ownProps) {
+      return {
+        closeReceiptFn: (e) =>  { dispatch( AC.closeReceipt() ) },
+      }
+    }
+  }) // end of ... component property injection
 
 // define expected props
 Receipt.propTypes = {

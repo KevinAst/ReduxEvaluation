@@ -14,91 +14,87 @@ import {AC}                      from '../state/actions'
 // *** Cart component (a Shopping Cart)
 // ***
 
-// our internal Cart$ class (wrapped with Cart below)
-class Cart$ extends MyReactComponent {
+const Cart = ReduxUtil.wrapCompWithInjectedProps(
 
-  componentDidMount() {
-    Esc.regEscHandler(this.props.closeCartFn)
-  }
+  class extends MyReactComponent { // component definition
 
-  componentWillUnmount() {
-    Esc.unregEscHandler(this.props.closeCartFn)
-  }
-
-  render() {
-    const { cartItems, closeCartFn, changeQtyFn, removeItemFn, checkoutFn } = this.props
-
-    const additionalContentPerItemFn = (cartItem) => {
-      return <span>
-               <span className="qty">
-                 Quantity:
-                 <input name="qty"
-                        value={cartItem.qty}
-                        onChange={e => changeQtyFn(cartItem, parseInt(e.target.value, 10) || 0)} />
+    componentDidMount() {
+      Esc.regEscHandler(this.props.closeCartFn)
+    }
+    
+    componentWillUnmount() {
+      Esc.unregEscHandler(this.props.closeCartFn)
+    }
+    
+    render() {
+      const { cartItems, closeCartFn, changeQtyFn, removeItemFn, checkoutFn } = this.props
+    
+      const additionalContentPerItemFn = (cartItem) => {
+        return <span>
+                 <span className="qty">
+                   Quantity:
+                   <input name="qty"
+                          value={cartItem.qty}
+                          onChange={e => changeQtyFn(cartItem, parseInt(e.target.value, 10) || 0)} />
+                 </span>
+    
+                 <span style={{display:       "inline-flex",
+                               flexDirection: "column",
+                               fontSize:      '75%',
+                               fontWeight:    'bold',
+                               cursor:        'pointer'}}>
+                   <i className="fa fa-angle-double-up"
+                      title="increase quantity"
+                      onClick={e => changeQtyFn(cartItem, cartItem.qty+1)}></i>
+                   <i className="fa fa-angle-double-down"
+                      title="decrease quantity"
+                      onClick={e => changeQtyFn(cartItem, cartItem.qty-1)}></i>
+                 </span>
+                 
+                 <button className="remove" onClick={e => removeItemFn(cartItem)} >Remove</button>
+                 
+                 <span className="lineTotal">
+                   { formatMoney(unitPrice(cartItem.price, cartItem.qty)) }
+                 </span>
                </span>
-
-               <span style={{display:       "inline-flex",
-                             flexDirection: "column",
-                             fontSize:      '75%',
-                             fontWeight:    'bold',
-                             cursor:        'pointer'}}>
-                 <i className="fa fa-angle-double-up"
-                    title="increase quantity"
-                    onClick={e => changeQtyFn(cartItem, cartItem.qty+1)}></i>
-                 <i className="fa fa-angle-double-down"
-                    title="decrease quantity"
-                    onClick={e => changeQtyFn(cartItem, cartItem.qty-1)}></i>
-               </span>
+      }
+    
+      return <div className="modal cart">
                
-               <button className="remove" onClick={e => removeItemFn(cartItem)} >Remove</button>
+               <button className="continue"
+                       onClick={closeCartFn}>Continue shopping</button>
                
-               <span className="lineTotal">
-                 { formatMoney(unitPrice(cartItem.price, cartItem.qty)) }
-               </span>
-             </span>
+               <button className="checkout"
+                       onClick={e => checkoutFn(totalItems(cartItems))}
+                       disabled={totalItems(cartItems) <= 0}>Checkout</button>
+               
+               <h1>Cart</h1>
+               <Items items={cartItems}
+                      additionalContentPerItemFn={additionalContentPerItemFn}/>
+    
+               <div className="total">Total:
+                 <span className="formattedTotal">{ formatMoney(totalItems(cartItems)) }</span>
+               </div>
+             </div>
     }
 
-    return <div className="modal cart">
-             
-             <button className="continue"
-                     onClick={closeCartFn}>Continue shopping</button>
-             
-             <button className="checkout"
-                     onClick={e => checkoutFn(totalItems(cartItems))}
-                     disabled={totalItems(cartItems) <= 0}>Checkout</button>
-             
-             <h1>Cart</h1>
-             <Items items={cartItems}
-                    additionalContentPerItemFn={additionalContentPerItemFn}/>
+  }, // end of ... component definition
 
-             <div className="total">Total:
-               <span className="formattedTotal">{ formatMoney(totalItems(cartItems)) }</span>
-             </div>
-           </div>
-  }
-}
-
-
-//***
-//*** wrap our internal Cart$ class with a public Cart class
-//*** that injects properties (both data and behavior) from our state.
-//***
-
-const Cart = ReduxUtil.wrapCompWithInjectedProps(Cart$, {
-               mapStateToProps(appState, ownProps) {
-                 return {
-                   cartItems: appState.cart.cartItems,
-                 }
-               },
-               mapDispatchToProps(dispatch, ownProps) {
-                 return {
-                   closeCartFn:  ()              =>  { dispatch( AC.closeCart() ) },
-                   changeQtyFn:  (cartItem, qty) =>  { if (qty>=0) dispatch( AC.setCartItemQty(cartItem, qty) ) },
-                   removeItemFn: (cartItem)      =>  { dispatch( AC.removeCartItem(cartItem) ) },
-                   checkoutFn:   (total)         =>  { dispatch( AC.checkout(total) ) },
-                 }
-               }
-             })
+  { // component property injection
+    mapStateToProps(appState, ownProps) {
+      return {
+        cartItems: appState.cart.cartItems,
+      }
+    },
+    mapDispatchToProps(dispatch, ownProps) {
+      return {
+        closeCartFn:  ()              =>  { dispatch( AC.closeCart() ) },
+        changeQtyFn:  (cartItem, qty) =>  { if (qty>=0) dispatch( AC.setCartItemQty(cartItem, qty) ) },
+        removeItemFn: (cartItem)      =>  { dispatch( AC.removeCartItem(cartItem) ) },
+        checkoutFn:   (total)         =>  { dispatch( AC.checkout(total) ) },
+      }
+    }
+  }) // end of ... component property injection
 
 // define expected props
 Cart.propTypes = {
