@@ -1,6 +1,10 @@
 'use strict'
 
-import {AT} from './actions'
+import {AT}      from './actions'
+import ReduxUtil from '../util/redux-util'
+
+export default ReduxUtil
+
 
 
 // ***
@@ -48,6 +52,5 @@ const reducers = { // our sub-reducers (in lieu of switch statement)
 }
 
 export function cartItems(cartItems=[], action) {
-  const  reducer = reducers[action.type]
-  return reducer ? reducer(cartItems, action) : cartItems
+  return ReduxUtil.resolveReducer(reducers, cartItems, action)
 }

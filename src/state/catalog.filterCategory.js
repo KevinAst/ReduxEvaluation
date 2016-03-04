@@ -1,6 +1,7 @@
 'use strict'
 
-import {AT} from './actions'
+import {AT}      from './actions'
+import ReduxUtil from '../util/redux-util'
 
 // ***
 // *** appState.catalog.filterCategory reducer
@@ -15,6 +16,5 @@ const reducers = { // our sub-reducers (in lieu of switch statement)
 }
 
 export function filterCategory(filterCategory="", action) {
-  const  reducer = reducers[action.type]
-  return reducer ? reducer(filterCategory, action) : filterCategory
+  return ReduxUtil.resolveReducer(reducers, filterCategory, action)
 }
