@@ -1,6 +1,8 @@
 'use strict'
 
-import {AT} from './actions'
+import {AT}      from './actions'
+import ReduxUtil from '../util/redux-util'
+
 
 // ***
 // *** appState.cart.visible reducer
@@ -14,6 +16,5 @@ const reducers = { // our sub-reducers (in lieu of switch statement)
 }
 
 export function visible(visible=false, action) {
-  const  reducer = reducers[action.type]
-  return reducer ? reducer(visible, action) : visible
+  return ReduxUtil.resolveReducer(reducers, visible, action)
 }

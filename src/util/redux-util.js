@@ -22,13 +22,28 @@ const ReduxUtil = {
    * per the react-redux documentation
    * ... https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
    */
-  wrapCompWithInjectedProps: (comp, mapping) => {
+  wrapCompWithInjectedProps(comp, mapping) {
     mapping = mapping || {}
     return connect(mapping.mapStateToProps, 
                    mapping.mapDispatchToProps,
                    mapping.mergeProps,
                    mapping.options) (comp)
+  },
+
+
+  /**
+   * Resolve the reducer function, from the supplied set of reducers
+   * with the standard redux state/action, providing an alternative to
+   * the switch statement.
+   *
+   * The reducers is a simple object with reducer functions of the
+   * same name as the action.type.
+   */
+  resolveReducer(reducers, state, action) {
+    const  reducer = reducers[action.type]
+    return reducer ? reducer(state, action) : state
   }
+
 
 }
 

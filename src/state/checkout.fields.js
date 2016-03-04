@@ -1,6 +1,7 @@
 'use strict'
 
-import {AT} from './actions'
+import {AT}      from './actions'
+import ReduxUtil from '../util/redux-util'
 
 
 // ***
@@ -32,6 +33,5 @@ const reducers = { // our sub-reducers (in lieu of switch statement)
 }
 
 export function fields(fields={}, action) {
-  const  reducer = reducers[action.type]
-  return reducer ? reducer(fields, action) : fields
+  return ReduxUtil.resolveReducer(reducers, fields, action)
 }
